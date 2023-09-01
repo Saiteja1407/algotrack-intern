@@ -1,0 +1,21 @@
+.yourorderscoloumn{
+    min-width: 40%;
+    background-color: #424242;
+    color: white;
+    height: 3rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 2em;
+    box-shadow:12px 12px 2px 1px rgba(120, 120, 120, 0.2);
+}
+
+.placeaneworderbutton{
+    color: white;
+
+}
+.ordersdashboardtrow{
+    align-items: center;
+}
+.moredetailsbutton{
+    margin-left: 1rem;
+}

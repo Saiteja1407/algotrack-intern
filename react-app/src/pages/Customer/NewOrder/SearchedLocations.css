@@ -1,0 +1,25 @@
+
+.card
+{
+    background-color: rgb(253, 241, 232);
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:10%;
+    margin-bottom:10%;
+}
+/* div Button{
+    margin-bottom:10px;
+    background-color: grey;
+    padding:0;
+    width:100%;
+    margin-right:50%;
+    /* width:fit-content; */
+/* } */ */
+  .search
+  {
+    width:100%;
+    margin-top:4rem;
+    margin-left:8rem;
+  }
+
+  

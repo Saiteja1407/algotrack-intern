@@ -1,0 +1,34 @@
+.black-white-theme {
+    background-color: #fff;
+    color: #000;
+  }
+  
+  .black-white-theme .FormLabel {
+    color: #000;
+  }
+  
+  .black-white-theme .FormSelect {
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #000;
+  }
+  
+  .black-white-theme .FormSelect option {
+    color: #000;
+    background-color: #fff;
+  }
+  
+  .black-white-theme .submitbutton {
+    background-color: #000;
+    border: 1px solid #000;
+    color: #fff;
+  }
+  
+  .black-white-theme .submitbutton:hover {
+    background-color: #fff;
+    color: #000;
+  }
+
+.customer-registration-maindiv{
+    background-color: rgb(205, 205, 205);
+}

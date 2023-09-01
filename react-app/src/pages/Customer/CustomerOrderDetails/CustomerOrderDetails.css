@@ -1,0 +1,71 @@
+.orderdetails{
+    padding:10px;
+    font-size: 50px;
+    font-family: fantasy;
+    text-align: center;
+ }
+ .orderdetailsbox{
+      background-color:azure;
+      font-size: 25px;
+      height: auto;
+      margin-top:10px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 5px 5px 10px black ;
+      padding:15px;
+      font-family: monospace;
+      max-width:500px;
+      border-radius: 20px;
+ }
+ .status{
+     align-items: center;
+     margin-top:10px;
+     margin-bottom: 10px;
+ }
+ .detailsheading{
+     font-weight:bolder;
+     font-size: 35px;
+     margin-bottom: 10px;
+     margin-top: 10px;
+ }
+ .productdetails{
+     gap:10px;
+ }
+ .dandt{
+     font-weight:bolder;
+     font-size: 35px;
+     margin-bottom: 10px;
+ }
+ .warehousedetails{
+     font-weight:bolder;
+     font-size: 35px;
+     margin-bottom: 10px;
+     margin-top: 10px;
+ }
+ .inventoryview{
+     text-align: center;
+     margin-top: 10px;
+ }
+ .inventoryview button{
+     background-color:rgb(255, 202, 44);
+     text-align: center;
+     padding:.5rem;
+     color: white;
+     font-weight: 500;
+     font-size: 1.1rem;
+     border: none;
+     border-radius: 8px;
+ }
+ .test1{
+     display:flex;
+     flex-wrap: wrap;
+     justify-content: space-around;
+     align-items: center;
+ 
+ }
+ .test2{
+     display:flex;
+     flex-wrap: wrap;
+     justify-content: space-around;
+     align-items: center;   
+ }

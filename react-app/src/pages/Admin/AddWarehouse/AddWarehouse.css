@@ -1,0 +1,22 @@
+.addwarehousewrapper{
+    padding: 40px;
+    height: fit-content;
+}
+
+.add-warehouse-login{
+    height: min-content;
+    width: 25rem;
+    padding: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 5px;
+    background-color: aliceblue;
+    color: black;
+}
+.addwarehousefont-weight{
+    font-weight: 600;
+    font-size: larger;
+}
+.addwarehouseheading{
+    padding-bottom: 10px;
+}

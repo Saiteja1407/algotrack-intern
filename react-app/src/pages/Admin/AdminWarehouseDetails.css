@@ -1,0 +1,91 @@
+
+.moredetails {
+    background-color: rgb(196, 199, 202);
+    margin-top: 5%;
+    margin-bottom: 5%;
+    border-radius: 0.75rem;
+    width: 100%;
+    padding: 10px;
+  }
+  
+  
+  
+  .carousel {
+    margin-top: 8%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+  }
+  
+  .detailsinfo {
+    margin-top: 5%;
+    background-color: rgb(239, 239, 248);
+    font-family: 'Segoe UI';
+    border-radius: 2%;
+    font-weight: bold;
+    padding: 10px;
+  }
+  
+  /* p {
+    justify-content: center;
+    margin-top: 10%;
+    margin-left: 2%;
+    margin-bottom: auto;
+    padding: 2px;
+  } */
+  
+ 
+  
+  /*.card1 {
+    background-color: rgb(176, 176, 176);
+  }
+  
+  .card2 {
+    margin-top: 7%;
+    font-weight: bold;
+  }*/
+  
+  /* div Button {
+    margin-left: 75%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    background-color: gray;
+    width: fit-content;
+  } */
+  
+  
+  .admin-warehouse-details-buttons{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .contact-now{
+    flex: 1;
+    min-width: 8rem;
+    max-width: 8.1rem;
+  }
+  /* @media (max-width: 1383px) {
+    .moredetails {
+      width: 90%;
+      margin-left:auto;
+      margin-right:auto;
+    }
+  
+    .carousel {
+      width: 100%;
+    }
+    .sensorbuttons{
+        margin-left:0;
+        padding:0;
+        width:20rem;
+      }
+    .detailsinfo {
+      margin-top: 5%;
+    }
+    div Button{
+        margin-left:60%;
+    }
+  } */
+  

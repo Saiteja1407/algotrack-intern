@@ -1,0 +1,15 @@
+.wrapper{
+    height: 100vh;
+}
+.admin-login{
+    height: min-content;
+    width: 300px;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: aliceblue;
+    color: black;
+}
+.admin-login-p{
+    padding-top: 20px;
+    text-align: center;
+}

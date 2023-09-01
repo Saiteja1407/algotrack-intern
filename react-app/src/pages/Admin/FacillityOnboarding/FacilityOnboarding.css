@@ -1,0 +1,22 @@
+.facility-onboarding-wrapper{
+    padding: 40px;
+    height: fit-content;
+}
+
+.facility-onboarding-login{
+    height: min-content;
+    width: 25rem;
+    padding: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 5px;
+    background-color: aliceblue;
+    color: black;
+}
+.facility-onboarding-font-weight{
+    font-weight: 600;
+    font-size: larger;
+}
+.facility-onboarding-heading{
+    padding-bottom: 10px;
+}

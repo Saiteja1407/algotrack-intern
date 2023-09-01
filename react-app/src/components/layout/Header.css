@@ -1,0 +1,9 @@
+.navbar-login-link{
+    text-decoration: none;
+    color: #6c757d;
+}
+
+.navbar-login-link:hover{
+    font-weight:600;
+    color: #5d6368;
+}

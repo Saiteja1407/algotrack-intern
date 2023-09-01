@@ -1,0 +1,22 @@
+.update-warehouse-details-wrapper{
+    padding: 40px;
+    height: fit-content;
+}
+
+.update-warehouse-details-login{
+    height: min-content;
+    width: 25rem;
+    padding: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 5px;
+    background-color: aliceblue;
+    color: black;
+}
+.update-warehouse-details-weight{
+    font-weight: 600;
+    font-size: larger;
+}
+.update-warehouse-details-heading{
+    padding-bottom: 10px;
+}
