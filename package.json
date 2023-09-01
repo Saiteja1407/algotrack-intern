@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon server.js",
-    "client":"npm start --prefix ./algotrack-intern",
+    "client":"npm start --prefix ./react-app",
     "dev":"concurrently \"npm start\" \"npm run client\" "
   },
   "keywords": [],
