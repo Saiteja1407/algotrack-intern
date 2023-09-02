@@ -9,7 +9,7 @@
     font-size: 2em;
     box-shadow:12px 12px 2px 1px rgba(120, 120, 120, 0.2);
 }
-.orderdetails{
-    font-weight: 700;
-    font-size: larger;
+.customerorderdetails{
+    font-weight: 500;
+    font-size: 1.75rem;
 }

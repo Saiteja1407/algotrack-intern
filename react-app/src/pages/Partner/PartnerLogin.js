@@ -1,11 +1,13 @@
 import React,{useState} from 'react'
 import './PartnerLogin.css'
 import {useNavigate} from 'react-router-dom'
+import { FaEye, FaEyeSlash } from "react-icons/fa"
 import axios from 'axios'
 
 
 const PartnerLogin = () => {
     const Navigate=useNavigate();
+    const [visible, setVisibility]=useState(false)
     const [inputs,setInputs]=useState({
         partnerId:"",
         password:""
@@ -41,10 +43,13 @@ const PartnerLogin = () => {
                     <label for="floatingInput">User ID</label>
                     <div className='invalid-feedback'>Enter your User ID</div>
                 </div>
-                <div className="form-floating was-validated mb-3">
-                        <input type="password" name='password' onChange={handleChange} value={inputs.email} className="form-control" id="floatingPassword" placeholder="Password" required/>
-                        <label for="floatingPassword">Password</label>
-                        <div className='invalid-feedback'>Enter the Password</div>
+                <div className='input-group mb-3 was-validated'>
+                    <div className="form-floating">
+                            <input onChange={handleChange} name='password' type={visible ? "text" : "password"} className="form-control" id="floatingPassword" placeholder="Password" value={inputs.password} required/>
+                            <label htmlFor="floatingPassword">Password</label>
+                            <div className='invalid-feedback'>Enter the Password</div>
+                    </div>
+                    <span className="input-group-text" style={{height:58+"px"}} onClick={()=> setVisibility(visible => !visible)}>{visible ? <FaEyeSlash/> : <FaEye/>}</span>
                 </div>
                 <button type ='submit'  className='btn btn-success w-100 mt-2'>Submit</button>
                 <p className='partner-login-p'><a href='www.google.com'>Forgot Password?</a></p>

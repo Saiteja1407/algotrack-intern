@@ -74,95 +74,121 @@ const MainScreen2 = ({ cityLocation }) => {
                       </Row>
   
                       <Row className="p-3">
-                      <Col xs={2}></Col>
-                        <Col xs={12} md={8}>
+                      <Col xs={1}></Col>
+                        <Col xs={12} md={10}>
                           <Form.Group className="mb-3">
-                            <Form.Label><h5>Product Type</h5></Form.Label>
-                            <Form.Select aria-label="Default select example" value={productType} onChange={(e) => setProductType(e.target.value)} size="lg">
+                            <Form.Label><h5>Product Type:</h5></Form.Label>
+                            <Form.Select aria-label="Default select example" value={productType} onChange={(e) => setProductType(e.target.value) } size="lg" required>
+                              <option selected disabled value="">Select the Product type</option>
                               <option value="Veg">Veg</option>
                               <option value="Non-Veg">Non-Veg</option>
                             </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Select a valid Product type
+                            </Form.Control.Feedback>
                           </Form.Group>
                         </Col>
                       </Row>
   
                       <Row className="p-3">
-                      <Col xs={2}></Col>
-                        <Col xs={12} md={8}>
+                      <Col xs={1}></Col>
+                        <Col xs={12} md={10}>
                           <Form.Group>
                             <Form.Label><h5> Product Details:</h5></Form.Label>
-                            <Form.Select aria-label="Default select example" value={productDetails} onChange={(e) => setProductDetails(e.target.value) } size="lg">
+                            <Form.Select aria-label="Default select example" value={productDetails} onChange={(e) => setProductDetails(e.target.value) } size="lg" required>
+                              <option selected disabled value="">Select the Product details</option>
                               <option value="Product 1">Product 1</option>
                               <option value="Product 2">Product 2</option>
                               <option value="Product 3">Product 3</option>
                             </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Select your Product details
+                            </Form.Control.Feedback>
                           </Form.Group>
                         </Col>
                       </Row>
   
                       <Row className="p-3">
-                      <Col xs={2}></Col>
-                        <Col xs={12} md={8}>
+                      <Col xs={1}></Col>
+                        <Col xs={12} md={10}>
                           <Form.Group className="mb-3">
                             <Form.Label><h5>Temperature Range :</h5></Form.Label>
-                            <Form.Select aria-label="Default select example" value={temperatureRange} onChange={(e) => setTemperatureRange(e.target.value)} size="lg">
+                            <Form.Select aria-label="Default select example" value={temperatureRange} onChange={(e) => setTemperatureRange(e.target.value)} size="lg" required>
+                              <option selected disabled value="">Select the Temperature Range</option>
                               <option value="Dry">Dry</option>
                               <option value="Frozen">Frozen</option>
                               <option value="Chiller">Chiller</option>
                             </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Select a valid Temperature Range
+                            </Form.Control.Feedback>
                           </Form.Group>
                         </Col>
                       </Row>
   
                       <Row className="p-3">
-                      <Col xs={2}></Col>
-                        <Col xs={12} md={8}>
+                      <Col xs={1}></Col>
+                        <Col xs={12} md={10}>
                           <Form.Group className="mb-3">
                             <Form.Label><h5>Storage Type :</h5></Form.Label>
-                            <Form.Select aria-label="Default select example" value={storageType} onChange={(e) => setStorageType(e.target.value)} size="lg">
+                            <Form.Select aria-label="Default select example" value={storageType} onChange={(e) => setStorageType(e.target.value)} size="lg" required>
+                              <option selected disabled value="">Select the Storage Type</option>
                               <option value="Pellates">Pellates</option>
                               <option value="Floor Mezzanine">Floor Mezzanine</option>
                             </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Select a valid Storage Type
+                            </Form.Control.Feedback>
                           </Form.Group>
                         </Col>
                       </Row>
   
                       <Row className="p-3">
-                      <Col xs={2}></Col>
-                        <Col xs={12} md={8}>
+                      <Col xs={1}></Col>
+                        <Col xs={12} md={10}>
                           <Form.Group className="mb-3">
                             <Form.Label><h5>UOM :</h5></Form.Label>
-                            <Form.Select aria-label="Default select example" value={uom} onChange={(e) => setUOM(e.target.value)} size="lg">
+                            <Form.Select aria-label="Default select example" value={uom} onChange={(e) => setUOM(e.target.value)} size="lg" required>
+                              <option selected disabled value="">Select the UOM</option>
                               <option value="Pellates">Pellates</option>
                               <option value="Tons">Tons</option>
                             </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Select a valid UOM
+                            </Form.Control.Feedback>
                           </Form.Group>
                         </Col>
                       </Row>
   
                       <Row className="p-3">
-                      <Col xs={2}></Col>
-                        <Col xs={12} md={8}>
+                      <Col xs={1}></Col>
+                        <Col xs={12} md={10}>
                           <Form.Group>
                             <Form.Label><h5> Number Of Units:</h5></Form.Label>
                             <Form.Control type="number" placeholder="Enter the Number Of Units" value={numberOfUnits} onChange={(e) => setNumberOfUnits(e.target.value)} required  size="lg"/>
+                            <Form.Control.Feedback type="invalid">
+                              Enter the number of units
+                            </Form.Control.Feedback>
                           </Form.Group>
                         </Col>
                       </Row>
   
                       <Row className="p-3">
-                      <Col xs={2}></Col>
-                        <Col xs={12} md={8}>
+                      <Col xs={1}></Col>
+                        <Col xs={12} md={10}>
                           <Form.Group>
                             <Form.Label><h5> Duration In Months:</h5></Form.Label>
                             <Form.Control type="number" placeholder="Enter the Number Of Months " value={duration} onChange={(e) => setDuration(e.target.value)} required size="lg" />
+                            <Form.Control.Feedback type="invalid">
+                              Enter a valid duration of months
+                            </Form.Control.Feedback>
                           </Form.Group>
                         </Col>
                       </Row>
   
                       <Row className="p-3">
-                      <Col xs={2}></Col>
-                        <Col xs={12} md={8}>
+                      <Col xs={1}></Col>
+                        <Col xs={12} md={10}>
                           <Form.Group className="mb-3" size="lg">
                             <Form.Label><h5>Possesion:</h5></Form.Label>
                             <br />
@@ -174,6 +200,9 @@ const MainScreen2 = ({ cityLocation }) => {
                               required
                               
                             />
+                            <Form.Control.Feedback type="invalid">
+                              Enter a valid date
+                            </Form.Control.Feedback>
                           </Form.Group>
                         </Col>
                       </Row>

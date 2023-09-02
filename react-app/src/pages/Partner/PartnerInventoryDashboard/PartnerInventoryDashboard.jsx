@@ -28,7 +28,7 @@ let PartnerInventoryDashboard = () =>{
                     
                     <Col className="ms-auto" xs={12} md={3}><Button variant="warning" size="lg" className="addinventorybutton m-auto"> Add Inventory</Button></Col>
                  </Row>
-                 <div className="orderdetails">
+                 <div className="partnerorderdetails">
                  <Row className="mt-3">
                     <Col xs={12} md={6}> Order Id : 1</Col>
                     
@@ -43,7 +43,7 @@ let PartnerInventoryDashboard = () =>{
                  
                  <Table striped="columns" bordered hover size="lg" variant="Secondary" className="shadow-lg" responsive>
       
-                    <thead size="lg" className="fs-4" >
+                    <thead size="lg" className="h5" >
                       <tr>
                          <th >Inventory Id</th>
                          <th >Total no.of Units Belonging To Inventory</th>

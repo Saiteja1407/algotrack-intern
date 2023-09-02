@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 const EmailLogin = () => {
+  const [visible, setVisibility]=useState(false)
   const [inputs,setInputs]=useState({
     email:"",
     password:""
@@ -36,7 +37,7 @@ const EmailLogin = () => {
       <div className='wrapper bg-light d-flex align-items-center justify-content-center w-100'>
          
          <div className='login shadow' >
-             <h2 className='mb-3'>Login With Email Id</h2>
+             <h2 className='mb-3' style={{paddingTop:10+'px', paddingBottom:10+'px'}}>Login With Email Id</h2>
              <form className='needs-validation' onSubmit={handleSubmit}> 
                <div className='form-group was-validated mb-2'>
                       <label htmlFor='email' className='form-label'>Email Address</label>
@@ -45,13 +46,15 @@ const EmailLogin = () => {
                          Please Enter Your Email 
                       </div>
                </div>
-               <div className='form-group was-validated mb-2'>
-                      <label htmlFor='password' className='form-label'>Password</label>
-                      <input type='password' name='password' value={inputs.password} onChange={handleChange} className='form-control' required></input>
-                      <div className='invalid-feedback'>
-                         Please Enter Your Password 
-                      </div>
+               <div className='input-group mb-2 was-validated'>
+                    <div className="form-floating">
+                            <input type={visible ? "text" : "password"} name='password' value={inputs.password} onChange={handleChange} className="form-control" id="floatingPassword" placeholder="Password" required/>
+                            <label for="floatingPassword">Password</label>
+                            <div className='invalid-feedback'>Enter the Password</div>
+                    </div>
+                    <span className="input-group-text" style={{height:58+"px"}} onClick={()=> setVisibility(visible => !visible)}>{visible ? <FaEyeSlash/> : <FaEye/>}</span>
                </div>
+               <p style={{textAlign:"center"}}><a href=''>Forgot your Password?</a></p>
                <button type='submit' className='btn btn-success w-100 mt-2'>Login</button>
              </form>
              
@@ -62,4 +65,4 @@ const EmailLogin = () => {
   )
 }
 
-export default EmailLogin
+export default EmailLogin;

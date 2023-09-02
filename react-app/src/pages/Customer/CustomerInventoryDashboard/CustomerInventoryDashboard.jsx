@@ -39,7 +39,7 @@ let CustomerInventoryDashboard = () =>{
                  <Row>
                     <Col xs={10} md={6} className="inventorydetailscoloumn mx-auto">Inventory DashBoard</Col>
                  </Row>
-                 <div className="orderdetails bg-body-secondary rounded px-4">
+                 <div className="customerorderdetails bg-body-secondary rounded px-4">
                  <Row className="mt-3 ms-2">
                     <Col xs={12} md={6}> Order Id :{id} </Col>     {/* data from database */}
                  </Row>
@@ -53,7 +53,7 @@ let CustomerInventoryDashboard = () =>{
                  
                  <Table striped="columns" bordered hover size="lg" variant="Secondary" className="shadow-lg" responsive>
       
-                    <thead size="lg" className="fs-4" >
+                    <thead size="lg" className="h5" >
                       <tr>
                          <th >Inventory Id</th>
                          <th >Total no.of Units Belonging To Inventory</th>
