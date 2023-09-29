@@ -32,9 +32,13 @@ function InventoryHistoryCreation(){
     }
     
     const handleSubmit=(e)=>{
+        const data={
+          ...inputs,
+          balanceUnits:inventoryDetails[0].balance_inventory_units
+        }
         const postData = async () => {
          try {
-           const response = await axios.post(`${process.env.REACT_APP_API}/partner/inventory/history/creation/${id}`, inputs);
+           const response = await axios.post(`${process.env.REACT_APP_API}/partner/inventory/history/creation/${id}`, data);
            Navigate(`/partner/inventory/history/${id}`);
            
            return response.data

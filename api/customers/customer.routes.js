@@ -3,7 +3,8 @@ import { signUpMobileController, createUser, signUpEmailController,
     loginCustomerEmailController,loginCustomerMobileController, 
     CustomerOrdersDashboardController,CustomerOrderDetailsController 
     ,CustomerInventoryDashboardController,CustomerInventoryHistoryController
-    ,CustomerMainscreen1Controller,CustomerMainscreen2Controller, CustomerWarehouseDetailsController} from "./customer.controller.js";
+    ,CustomerMainscreen1Controller,CustomerMainscreen2Controller, CustomerWarehouseDetailsController
+,CustomerWarehouseSelectionController} from "./customer.controller.js";
 
 const mysqlRouter=express.Router();
 mysqlRouter.post('/customer/registration',createUser);
@@ -18,4 +19,5 @@ mysqlRouter.get('/customer/order/details/:id',CustomerOrderDetailsController);
 mysqlRouter.get('/customer/inventory/dashboard/:id',CustomerInventoryDashboardController);
 mysqlRouter.get('/customer/inventory/history/:id',CustomerInventoryHistoryController);
 mysqlRouter.get('/customer/:id/:warehouseId',CustomerWarehouseDetailsController);
+mysqlRouter.post('/customer/:id/:warehouseId',CustomerWarehouseSelectionController);
 export default mysqlRouter;

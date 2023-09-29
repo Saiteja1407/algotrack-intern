@@ -8,11 +8,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useLocation, useParams,useNavigate } from "react-router-dom";
 import axios from "axios";
-import SearchedLocations from "./SearchedLocations";
 
 
 
-const MainScreen2 = ({ cityLocation }) => {
+const MainScreen2 = () => {
     const {id}=useParams();
     const location=useLocation();
     const navigate=useNavigate();
@@ -55,7 +54,7 @@ const MainScreen2 = ({ cityLocation }) => {
           const responseData = response.data.data;
 
       // Navigate to SearchedLocations and pass the response data in the state
-      navigate(`/customer/${id}/searchedlocations`,{state: { responseData }});
+      navigate(`/customer/${id}/searchedlocations`,{state:{formData:formData,responseData:responseData}});
 
         } catch (error) {
           throw error;

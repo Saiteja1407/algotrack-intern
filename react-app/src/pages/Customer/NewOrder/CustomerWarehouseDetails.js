@@ -7,13 +7,16 @@ import "./CustomerWarehouseDetails.css";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams ,useLocation} from 'react-router-dom';
 import axios from 'axios';
 
 const CustomerWarehouseDetails = () => {
       const {id,warehouseId}=useParams();
       const [warehouseDetails,setWarehouseDetails]=useState([]);
-      
+      const navigate=useNavigate();
+      const location=useLocation();
+      const formData=location.state;
+      console.log(formData);
       useEffect(()=>{
         const fetchWarehouseDetails = async () => {
           try {
@@ -30,7 +33,16 @@ const CustomerWarehouseDetails = () => {
       [id,warehouseId]);
 
       function handleContact(){
-        
+        const postData = async () => {
+          try {
+            const response = await axios.post(`${process.env.REACT_APP_API}/customer/${id}/${warehouseId}`, formData);
+            const responseData = response.data.data;
+            navigate(`/customer/mainscreen/${id}`);
+          } catch (error) {
+            throw error;
+          }
+        };
+         postData()
       }
       
   return (

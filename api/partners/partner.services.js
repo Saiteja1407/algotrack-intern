@@ -86,10 +86,11 @@ export const getPartnerInventoryDetails=(id,callBack)=>{
 
 export const createInventoryHistory=(inventoryId,body,callBack)=>{
    pool.query(
-    `insert into inventory_history(dispatched_date_time,dispatched_units,inventory_id) values(?,?,?)`,
+    `insert into inventory_history(dispatched_date_time,dispatched_units,inventory_id,units_before_dispatch) values(?,?,?,?)`,
     [body.dispatchedDateTime,
      body.unitsDispatched,
-     inventoryId
+     inventoryId,
+     body.balanceUnits
      ],
      (error,results,fields)=>{
         if(error){

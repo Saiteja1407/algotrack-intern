@@ -2,15 +2,15 @@ import React from "react";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import "./SearchedLocations.css";
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import {  useLocation, useNavigate, useParams } from 'react-router-dom';
 import SearchBar from "../../../components/SearchBar";
 
-const SearchedLocations = (props) => {
-       const location=useLocation();
+const SearchedLocations = () => {
        const {id}=useParams();
        const navigate=useNavigate();
-      const { responseData } = location.state;
-      console.log(responseData);
+       const location=useLocation();
+       const {formData,responseData}=location.state;
+      console.log(formData,responseData);
       const searchedLocationsData=[
         {
           img:'https://www.shutterstock.com/shutterstock/photos/1929800966/display_1500/stock-photo-interior-of-a-modern-warehouse-storage-of-retail-shop-with-pallet-truck-near-shelves-1929800966.jpg',
@@ -38,7 +38,7 @@ const SearchedLocations = (props) => {
         }
       ]
       function moreDetails(warehouseId){
-          navigate(`/customer/${id}/${warehouseId}`);
+          navigate(`/customer/${id}/${warehouseId}`,{state:{formData:formData}});
       }
 
   return (
@@ -48,8 +48,7 @@ const SearchedLocations = (props) => {
        <SearchBar PlaceHolder='search by Inventory Id'/>
         <div className="row g-2 bg-secondary rounded">
 
-          
-        { responseData.map(item => {
+          {responseData.map(item => {
           return(
           <div className="col-sm-12 col-lg-6 ">
             <Card style={{ width: '26rem' }} className="card shadow">
@@ -73,6 +72,7 @@ const SearchedLocations = (props) => {
           </div>
           )
         })}
+        { }
 
     
         </div>

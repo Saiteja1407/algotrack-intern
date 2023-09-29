@@ -74,7 +74,7 @@
 
 
 // function AdminNavbar(){
-//   const [showSidebar,setShowsidebar]=useState(true)
+//   const [showSidebar,setShowSidebar]=useState(true)
   
 //   return(
 //     <>
@@ -105,7 +105,7 @@
 //       </div>
 //       <div className={showSidebar?"adminrender":"adminrender active"}>
 //           <div className="adminheader">
-//           <GiHamburgerMenu onClick={()=>setShowsidebar(!showSidebar)}/>
+//           <GiHamburgerMenu onClick={()=>setShowSidebar(!showSidebar)}/>
 //           </div>
 //           <div className="admincontent">
 //             <Outlet/>
@@ -118,12 +118,12 @@
 // export default AdminNavbar;
 
 // function AdminNavbar(){
-//   const [showSidebar,setShowsidebar]=useState(true)
+//   const [showSidebar,setShowSidebar]=useState(true)
   
 //   return(
 //     <>
 //     <header className="adminheader">
-//      <GiHamburgerMenu onClick={()=>setShowsidebar(!showSidebar)}/>
+//      <GiHamburgerMenu onClick={()=>setShowSidebar(!showSidebar)}/>
 //     </header>
 //     <div className='containeradmin'>
 //       <div className={showSidebar ? 'sidebar':'sidebar active'}>
@@ -137,11 +137,11 @@
 //           </li>
 //           <li>
 //           <Link to='' className="link">Verify New Customers</Link>
-//           </li>
-//           <li>
-//           <Link to='' className="link">Manage Customer</Link> 
-//           </li>
-//           <li>
+          // </li>
+          // <li>
+          // <Link to='' className="link">Manage Customer</Link> 
+          // </li>
+          // <li>
 //           <Link to='' className="link">Add New Partners</Link> 
 //           </li>
 //           <li>
@@ -158,7 +158,7 @@
 // }
 // export default AdminNavbar;
 
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import "./AdminNavbar.css";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Link,Outlet,useParams } from "react-router-dom";
@@ -167,9 +167,16 @@ import { Link,Outlet,useParams } from "react-router-dom";
 
 
 function AdminNavbar(){
-  const [showSidebar,setShowsidebar]=useState(true)
+  const [showSidebar,setShowSidebar]=useState(true)
   const {id}=useParams();
-  return(
+  useEffect(() => {
+    // Check the screen width and set showSidebar accordingly
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 768) {
+      setShowSidebar(false); // Close the sidebar for mobile devices
+    }
+  }, []);
+  return( 
     <>
    
     <div className='containeradmin'>
@@ -198,7 +205,7 @@ function AdminNavbar(){
       </div>
       <div className={showSidebar?"adminrender":"adminrender active"}>
           <div className="adminheader">
-          <GiHamburgerMenu onClick={()=>setShowsidebar(!showSidebar)}/>
+          <GiHamburgerMenu onClick={()=>setShowSidebar(!showSidebar)}/>
           </div>
           <div className="admincontent">
             <Outlet/>

@@ -1,5 +1,5 @@
 import {  compareSync, genSaltSync, hashSync } from 'bcrypt';
-import {create,checkCustomerByMobile,checkCustomerByEmail, getCustomerByEmail, CustomerOrdersDashboard,getCustomerOrderDetails, getCustomerInventoryDashboard, getCustomerInventoryDetails, getSearchedLocations, getCustomerWarehouseDetails} from './customer.services.js';
+import {create,checkCustomerByMobile,checkCustomerByEmail, getCustomerByEmail, CustomerOrdersDashboard,getCustomerOrderDetails, getCustomerInventoryDashboard, getCustomerInventoryDetails, getSearchedLocations, getCustomerWarehouseDetails, placeOrderToWarehouse, getWarehouseNameAndPartnerId} from './customer.services.js';
 
 export const createUser=(req,res)=>{
    const body=req.body;
@@ -206,7 +206,7 @@ export const CustomerMainscreen1Controller=(req,res)=>{
 export const CustomerMainscreen2Controller=(req,res)=>{
    const id=req.params.id;
    const body=req.body;
-   console.log(body)
+   
    getSearchedLocations(body,(err,results)=>{
       
       if(err){
@@ -245,4 +245,46 @@ export const CustomerWarehouseDetailsController=(req,res)=>{
          data:results
       });
     })
+}
+
+export const CustomerWarehouseSelectionController=(req,res)=>{
+   const body=req.body.formData;
+   console.log(body.productDetails);
+   const {id,warehouseId}=req.params;
+   let warehouseName,partnerId;
+   getWarehouseNameAndPartnerId(warehouseId,(err,results)=>{
+      if(err){
+         console.log(err);
+         return res.send({
+            message:"error in getting partnerId and warehouseName"
+         })
+      }
+      if(!results){
+         return res.send({
+            message:"no warehouse available with this Id"
+         })
+      }
+      warehouseName=results[0].warehouse_name;
+      partnerId=results[0].partner_id;
+
+      placeOrderToWarehouse(body,id,warehouseId,warehouseName,partnerId,(err,results)=>{
+         if(err){
+            console.log(err);
+            return res.send({
+               message:"error in placing order"
+            })
+         }
+         if(!results){
+            return res.send({
+               message:"no warehouse available with this Id"
+            })
+         }
+         return res.send({
+            data:results
+         });
+      });
+
+
+   })
+   
 }

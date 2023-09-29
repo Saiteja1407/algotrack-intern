@@ -160,3 +160,41 @@ export const getCustomerWarehouseDetails=(warehouseId,callBack)=>{
     }
    );
 }
+
+export const placeOrderToWarehouse=(body,id,warehouseId,warehouseName,partnerId,callBack)=>{
+   pool.query(
+    `insert into order_details values(null,default,now(),NULL,NULL,NULL,?,?,?,?,?,?,?,?,?,?,?)`,
+    [
+      warehouseId,
+      warehouseName,
+      id,
+      body.productDetails,
+      body.productType,
+      body.temperatureRange,
+      body.storageType,
+      body.uom,
+      body.numberOfUnits,
+      body.duration,
+      partnerId
+    ],
+    (err,results)=>{
+        if(err){
+            return callBack(err);
+        }
+        return callBack(null,results);
+    }
+   );
+}
+
+export const getWarehouseNameAndPartnerId=(warehouseId,callBack)=>{
+   pool.query(
+    `select warehouse_name,partner_id from warehouse where warehouse_id=?`,
+    [warehouseId],
+    (err,results)=>{
+        if(err){
+            return callBack(err);
+        }
+        return callBack(null,results);
+    }
+   );
+}
