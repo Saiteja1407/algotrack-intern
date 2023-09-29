@@ -1,0 +1,21 @@
+span{
+    color: red;
+}
+.container{
+    color: aliceblue;
+}
+.footer-link{
+    text-decoration: none;
+}
+.color{
+    color:blue;
+}
+#rightHalf{
+    margin-top:4rem;
+    margin-bottom: 3rem;
+}
+@media (max-width: 768px){
+    #rightHalf{
+        margin-top: 0rem;
+    }
+}

@@ -20,7 +20,7 @@ const Header = () => {
     <>
     <Navbar expand="lg" className="bg-secondary mx-5 my-2 rounded">
       <Container fluid>
-        <Navbar.Brand className='text-white' href="/">Navbar scroll</Navbar.Brand>
+        <Navbar.Brand className='text-white'>Reefer On</Navbar.Brand>
         <Navbar.Toggle className='bg-white' aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav

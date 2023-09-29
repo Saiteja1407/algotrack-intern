@@ -1,0 +1,29 @@
+body{
+    margin:10px;
+}
+.aboutuspage{
+    height: auto;
+    width:80%;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    border-width:5px;
+    border-color: black;
+}
+.aboutus{
+    font-size:5rem;
+}
+.aboutuscontent img{
+    width:90%;
+    margin:20px;
+    margin-bottom: 3rem;
+}
+
+.aboutuscontent{
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.about-us-heading{
+    text-align: center;
+}

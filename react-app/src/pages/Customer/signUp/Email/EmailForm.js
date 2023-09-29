@@ -7,25 +7,26 @@ function EmailForm(){
         email:"",
         otp:""
     })
+    const navigate=useNavigate();
     function handleChange(e){
         const {name,value}=e.target;
         setInputs(values => ({ ...values, [name] : value}))
     }
     function handleSubmit(e){
         console.log(inputs)
+        console.log(isClicked)
+        //axios post request
+
+
+        navigate('/customer/registration');
         e.preventDefault();
     }
-    const navigate=useNavigate();
 
     function handleGetOtp(event){
         set(true)
         event.preventDefault();
     }
-    function handleVerifyOtp(e){
-        e.preventDefault();
-        //Navigate
-        navigate('/customer/registration');
-    }
+    
     return <form className='needs-validation'onSubmit={handleSubmit}>
         <div className="form-floating was-validated mb-3">
             <input onChange={handleChange} type="email" name='email' className="form-control" id="floatingInput" placeholder="abc@example.com" value={inputs.email} required/>
@@ -37,7 +38,7 @@ function EmailForm(){
                                 <label for="floatingInput">OTP</label>
                                 <div className='invalid-feedback'>Enter the OTP</div>
                     </div></div>  : null}
-        {isClicked ? <button type ='submit' onClick={handleVerifyOtp} className='btn btn-success w-100 mt-2'>Verify OTP</button> : <button type ='submit' onClick={handleGetOtp} className='btn btn-success w-100 mt-2'>Get OTP</button> }
+        {isClicked ? <button type ='submit'  className='btn btn-success w-100 mt-2'>Verify OTP</button> : <button type ='submit' onClick={handleGetOtp} className='btn btn-success w-100 mt-2'>Get OTP</button> }
         <div><p>Didn't Receive a OTP?<a href='www.google.com'>Resend OTP</a></p></div>
         
     </form>

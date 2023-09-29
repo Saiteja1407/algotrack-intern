@@ -22,7 +22,7 @@ const PartnerLogin = () => {
         const postData = async () => {
          try {
            const response = await axios.post(`${process.env.REACT_APP_API}/login/partner`, inputs);
-           Navigate(`/customer/mainscreen/${response.data.data}`);
+           Navigate(`/partner/mainscreen/${response.data.data}`);
            
            return response.data
          } catch (error) {

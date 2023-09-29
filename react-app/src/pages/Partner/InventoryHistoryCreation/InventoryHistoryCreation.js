@@ -1,20 +1,52 @@
-import React from 'react';
-import { Navigate } from "react-router-dom";
+import React,{useState,useEffect} from 'react';
+import { useNavigate,useParams } from "react-router-dom";
 import './InventoryHistoryCreation.css'
+import axios from 'axios';
 
 function InventoryHistoryCreation(){
+    const {id}=useParams();
     const [inputs,setInputs]=useState({
         unitsDispatched:"",
         dispatchedDateTime:""
     })
+    const [inventoryDetails,setInventoryDetails]=useState([]);
+    const Navigate=useNavigate();
+
+    useEffect(() => {
+        const fetchInventoryDetails = async () => {
+          try {
+            const response = await axios.get(`${process.env.REACT_APP_API}/partner/inventory/history/creation/${id}`);
+            setInventoryDetails(response.data.data);
+            console.log(response.data.data)
+          } catch (error) {
+            console.error('Error fetching order details:', error);
+          }
+        };
+    
+        fetchInventoryDetails();
+      }, [id]); 
+
     function handleChange(e){
         const {name,value}=e.target;
         setInputs(values => ({ ...values, [name] : value}))
     }
-    function handleSubmit(e){
-        console.log(inputs)
-        e.preventDefault();
+    
+    const handleSubmit=(e)=>{
+        const postData = async () => {
+         try {
+           const response = await axios.post(`${process.env.REACT_APP_API}/partner/inventory/history/creation/${id}`, inputs);
+           Navigate(`/partner/inventory/history/${id}`);
+           
+           return response.data
+         } catch (error) {
+           throw error;
+         }
+       };
+       postData();
+       e.preventDefault();
     }
+    
+
     function handleclick(){
         //Navigate
     }
@@ -23,12 +55,12 @@ function InventoryHistoryCreation(){
         <div className='partner-update-inventory-wrapper bg-dark align-items-center justify-content-center w-100'>
             <div className='row g-3 text-center' id="pui">
                 <div className="form-floating mb-3 mx-auto col-6 col-sm-5 col-lg-3">
-                    <input type="number" name='Total Inventory Units' className="form-control" id="floatingInput" placeholder="Total Inventory Units" value="1234"  readOnly/>
+                    <input type="number" name='Total Inventory Units' className="form-control" id="floatingInput" placeholder="Total Inventory Units" value={inventoryDetails.length > 0 && inventoryDetails[0].total_inventory_units}  readOnly/>
                     <label for="floatingInput">Total Inventory Units</label>
                 </div>
 
                 <div className="form-floating mb-3 mx-auto col-6 col-sm-5 col-lg-3">
-                    <input type="number" name="Balance Inventory Units" className="form-control" id="floatingInput" placeholder="Balance Inventory Units" value="1234"  readOnly/>
+                    <input type="number" name="Balance Inventory Units" className="form-control" id="floatingInput" placeholder="Balance Inventory Units" value={inventoryDetails.length > 0 && inventoryDetails[0].balance_inventory_units}  readOnly/>
                     <label for="floatingInput">Balance Inventory Units</label>
                 </div>
             </div>

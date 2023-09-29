@@ -4,13 +4,18 @@ import {useNavigate, useParams} from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import './CustomerMainScreen.css';
 import Table from 'react-bootstrap/Table';
-
-
 import axios from "axios";
+import SearchBar from "../../../components/SearchBar";
 
 
 
 let CustomerMainScreen = () =>{
+  // searchbar
+  const [orders, setOrders] = useState([]);             // Holds all orders
+  const [filteredOrders, setFilteredOrders] = useState([]);// Holds filtered orders
+  const [searchQuery, setSearchQuery] = useState('');      // Holds the search query
+
+
   const [data,setData]= useState([]);
   const navigate = useNavigate();
   const {id}=useParams();
@@ -32,6 +37,8 @@ let CustomerMainScreen = () =>{
         try {
             const response = await axios.get(`${process.env.REACT_APP_API}/customer/mainscreen/${id}`);
             setData(response.data.data);
+            setOrders(response.data.data);
+          setFilteredOrders(response.data.data);
             console.log(response.data.data)
         } catch (error) {
             console.log(error);
@@ -42,9 +49,23 @@ let CustomerMainScreen = () =>{
 }, [id]);
 
    const placeNewOrder=()=>{
-       navigate(`/customer/mainscreen1`)
+       navigate(`/customer/${id}/mainscreen1`)
    }
 
+    // Handle changes in the search bar input
+  const handleSearchChange = (e) => {
+    const searchQuery = e.target.value;
+    setSearchQuery(searchQuery);
+    filterOrders(searchQuery);
+  };
+
+    // Filter orders based on the search query
+    const filterOrders = (searchQuery) => {
+      const filteredOrders = orders.filter((order) =>
+        order.order_id.toString().includes(searchQuery)
+      );
+      setFilteredOrders(filteredOrders);
+    };
     return(
         <>
           <Container className="mb-5">
@@ -56,38 +77,46 @@ let CustomerMainScreen = () =>{
               </Row>
 
               <Row>
-                 <Row >
+                  {(orders.length>0)?
+                  <>
+
+                  <Col>
+                    <SearchBar PlaceHolder="serach by order ID" value={searchQuery} onChange={handleSearchChange}/>
+                  </Col>
+                 <Row>
                     <Col xs={12} md={6} className="yourorderscoloumn">Your Orders</Col>
-                 </Row>
+                 </Row></>:null}
+                  
                  <Row className="mt-4">
-                 
-                 <Table striped="columns" bordered hover size="lg" variant="Secondary" className="shadow-lg" responsive>
+                 {(orders.length>0)?<Table striped="columns" bordered hover size="lg" variant="Secondary" className="shadow-lg" responsive>
       
-                    <thead size="lg" className="h5" >
-                      <tr>
-                         <th className="text-center">Order Id</th>
-                         <th className="text-center">Product Name</th>
-                         <th className="text-center">Product Units</th>
-                         <th className="text-center">Ordered Date</th>
-                         <th className="text-center"> Order Status</th>
-                         <th ></th>
-                       </tr>
-                    </thead>
-                     <tbody className="center" size="lg">
-                     { data.map((val) =>(
-                           <tr>
-                            <>
-                            <td className="text-center">{val.order_id}</td>
-                            <td className="text-center">{val.product_details}</td>
-                            <td className="text-center">{val.product_units}</td>  
-                            <td className="text-center">{val.order_placed_date}</td> 
-                            <td className="text-center">{val.order_status}</td> 
-                            <td className="text-center"> <Button  onClick={()=>handleClick(val.order_id)} variant="danger">More Details</Button> </td>
-                            </>  
-                            </tr> 
-                       ))} 
-                     </tbody>
-                   </Table>
+      <thead size="lg" className="h5" >
+        <tr>
+           <th className="text-center">Order Id</th>
+           <th className="text-center">Product Name</th>
+           <th className="text-center">Product Units</th>
+           <th className="text-center">Ordered Date</th>
+           <th className="text-center"> Order Status</th>
+           <th ></th>
+         </tr>
+      </thead>
+       <tbody className="center" size="lg">
+       
+       { filteredOrders.map((val) =>(
+             <tr>
+              <>
+              <td className="text-center">{val.order_id}</td>
+              <td className="text-center">{val.product_details}</td>
+              <td className="text-center">{val.product_units}</td>  
+              <td className="text-center">{val.order_placed_date}</td> 
+              <td className="text-center">{val.order_status}</td> 
+              <td className="text-center"> <Button  onClick={()=>handleClick(val.order_id)} variant="danger">More Details</Button> </td>
+              </>  
+              </tr> 
+         ))} 
+       </tbody>
+     </Table>:<h4 className="no-customer-orders">You haven't placed orders yet</h4>}
+                 
                    
                  </Row>
               </Row>

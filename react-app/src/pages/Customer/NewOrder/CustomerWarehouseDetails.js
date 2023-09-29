@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect ,useState} from 'react'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -7,8 +7,32 @@ import "./CustomerWarehouseDetails.css";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const CustomerWarehouseDetails = () => {
+      const {id,warehouseId}=useParams();
+      const [warehouseDetails,setWarehouseDetails]=useState([]);
+      
+      useEffect(()=>{
+        const fetchWarehouseDetails = async () => {
+          try {
+            const response = await axios.get(`${process.env.REACT_APP_API}/customer/${id}/${warehouseId}`);
+            setWarehouseDetails(response.data.data);
+            
+          } catch (error) {
+            console.error('Error fetching order details:', error);
+          }
+        };
+    
+        fetchWarehouseDetails();
+      },
+      [id,warehouseId]);
+
+      function handleContact(){
+        
+      }
+      
   return (
     <>
         <Container>
@@ -68,7 +92,7 @@ const CustomerWarehouseDetails = () => {
         <ListGroup.Item>License document :</ListGroup.Item>
       </ListGroup>
       
-      <Button className='contact-now col-5 col-sm-4 col-md-3 m-2' variant="secondary">Contact Now</Button>
+      <Button onClick={handleContact} className='contact-now col-5 col-sm-4 col-md-3 m-2' variant="secondary">Contact Now</Button>
       
       </Card>
     </Col>

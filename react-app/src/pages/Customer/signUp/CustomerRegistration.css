@@ -1,5 +1,5 @@
 .black-white-theme {
-    background-color: #fff;
+    background-color: rgb(206, 216, 225);
     color: #000;
   }
   
@@ -31,4 +31,8 @@
 
 .customer-registration-maindiv{
     background-color: rgb(205, 205, 205);
+}
+.register{
+  text-align: center;
+  margin-top: 1rem;
 }

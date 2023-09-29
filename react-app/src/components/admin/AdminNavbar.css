@@ -1,0 +1,260 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,300&family=Signika+Negative:wght@500&display=swap');
+body{
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Signika Negative', sans-serif;
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+}
+.containeradmin{
+    display:flex;
+}
+
+.active{
+    left:-100%;
+}
+.sidebar img{
+    width:50px;
+    height: 48px ;
+    margin-left:10%;
+    position:relative;
+    right:65px;
+    top:15px;
+    margin-bottom:10px;
+}
+.sidebar p{
+    color:#F5F5F6;
+    margin:20px;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 0px;
+}
+.sidebar svg{
+    font-size: 30px;
+    color:#F5F5F6;
+    text-align:center;
+    position:relative;
+    top:10px;
+    left:40px;
+}
+.sidebar{
+   background-color:#222A45;
+   height:120vh;
+   width:250px;
+   text-align:center;
+   float: left;
+   position:relative;
+   left:0%;
+   padding:0 5px;
+   transition: all 1s;
+}
+.sidebar.active{
+    left:-100%;
+    width:0px;
+}
+
+.adminrender{
+    height:100vh;
+    float:left;
+    position:relative;
+    display:flex;
+    flex-direction: column;
+    width:calc(100%-width(sidebar));
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: all 1s;
+}
+.adminrender.active{
+    width:auto;
+    left:0%;
+    height:120vh;
+    position:relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+ul{
+    padding:0px;
+    text-align:start;
+}
+ul li{
+    list-style-type: none;
+    margin-top:5px;
+    margin-bottom:5px;
+    
+}
+.link{
+ color:#F5F5F6;
+ text-decoration: none;
+ display:block;
+ height:auto;
+ padding:10px 15px;
+ margin-left:auto;
+ margin-right: auto;
+ width:80%;
+ border-radius: 5px ;
+}
+ul li link:active,
+ul li link:hover{
+    background-color:blanchedalmond;
+}
+
+.navbaradmin svg{
+    position:relative;
+    left:20px;
+    top:20px;
+    font-size:30px;
+}
+
+.toggleicon{
+    text-align: start;
+    display:block;
+}
+.adminheader{
+    background-color:#222A45;
+    border-color: #F5F5F6;
+    margin:0px;
+    padding:0px;
+    height:50px;
+}
+.adminheader svg{
+    font-size: 30px;
+   margin-left: 10px;
+   margin-top:10px;
+    padding:5px;
+    color:#F5F5F6;
+} */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,300&family=Signika+Negative:wght@500&display=swap');
+body{
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Signika Negative', sans-serif;
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+}
+.containeradmin{
+    display:flex;
+}
+.containeradmin > .adminrender{
+   flex:3;
+}
+.sidebar img{
+    width:50px;
+    height: 48px ;
+    margin-left:10%;
+    position:relative;
+    right:65px;
+    top:15px;
+    margin-bottom:10px;
+}
+.sidebar p{
+    color:#F5F5F6;
+    margin:20px;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 0px;
+}
+.sidebar svg{
+    font-size: 30px;
+    color:#F5F5F6;
+    text-align:center;
+    position:relative;
+    top:10px;
+    left:40px;
+}
+.sidebar{
+   background-color:#222A45;
+   height:100vh;
+   width:250px;
+   text-align:center;
+   float: left;
+   position:relative;
+   left:0%;
+   padding:0 5px;
+   transition: all 1s;
+}
+.sidebar.active{
+    left:-100%;
+    width:0px;
+}
+
+.adminrender{
+    height:100vh;
+    float:left;
+    position:relative;
+    display:flex;
+    flex-direction: column;
+    width:calc(100%-250px);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: all 1s;
+    padding:10px;
+}
+.adminrender.active{
+    width:auto;
+    left:0%;
+    height:120vh;
+    position:relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+ul{
+    padding:0px;
+    text-align:start;
+}
+ul li{
+    list-style-type: none;
+    margin-top:5px;
+    margin-bottom:5px;
+    
+}
+.link{
+ color:#F5F5F6;
+ text-decoration: none;
+ display:block;
+ height:auto;
+ padding:10px 15px;
+ margin-left:auto;
+ margin-right: auto;
+ width:80%;
+ border-radius: 5px ;
+}
+ul li link:active,
+ul li link:hover{
+    background-color:blanchedalmond;
+}
+
+.navbaradmin svg{
+    position:relative;
+    left:20px;
+    top:20px;
+    font-size:30px;
+}
+
+.toggleicon{
+    text-align: start;
+    display:block;
+}
+.adminheader{
+   width:100%;
+    border-color: #F5F5F6;
+    margin:0px;
+    padding:0px;
+    height:50px;
+}
+.adminheader svg{
+    font-size: 30px;
+   margin-left: 10px;
+   margin-top:10px;
+    padding:5px;
+    color:#222A45;
+}
+.admincontent{
+  overflow-y: auto; /* Enable vertical scrollbar if content overflows */
+  max-height: calc(100vh - 50px); /* Calculate max height, subtracting the header height */
+  padding: 20px; 
+}
+
+

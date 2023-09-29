@@ -6,17 +6,23 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams,useNavigate } from "react-router-dom";
+import axios from "axios";
+import SearchedLocations from "./SearchedLocations";
+
 
 
 const MainScreen2 = ({ cityLocation }) => {
-    const {city}=useParams();
+    const {id}=useParams();
+    const location=useLocation();
+    const navigate=useNavigate();
+    const city=new URLSearchParams(location.search).get('location');
     const [selectedDate, setSelectedDate] = useState(null);
     const [productType, setProductType] = useState("Veg");
     const [productDetails, setProductDetails] = useState("");
     const [temperatureRange, setTemperatureRange] = useState("Dry");
-    const [storageType, setStorageType] = useState("Pellates");
-    const [uom, setUOM] = useState("Pellates");
+    const [storageType, setStorageType] = useState("Pallets");
+    const [uom, setUOM] = useState("Pallets");
     const [numberOfUnits, setNumberOfUnits] = useState("");
     const [duration, setDuration] = useState("");
   
@@ -29,7 +35,7 @@ const MainScreen2 = ({ cityLocation }) => {
   
       // Form data should be added to database
       const formData = {
-        cityLocation,
+        city,
         productType,
         productDetails,
         temperatureRange,
@@ -40,9 +46,24 @@ const MainScreen2 = ({ cityLocation }) => {
         selectedDate: selectedDate ? selectedDate.toLocaleDateString() : "",
       };
   
-      console.log(formData);
+      
   
       // Here you can perform any other actions with the form data, like sending it to a server, etc.
+      const postData = async () => {
+        try {
+          const response = await axios.post(`${process.env.REACT_APP_API}/customer/${id}/mainscreen2`, formData);
+          const responseData = response.data.data;
+
+      // Navigate to SearchedLocations and pass the response data in the state
+      navigate(`/customer/${id}/searchedlocations`,{state: { responseData }});
+
+        } catch (error) {
+          throw error;
+        }
+      };
+       postData()
+      
+      
     };
   
     return (
@@ -133,7 +154,7 @@ const MainScreen2 = ({ cityLocation }) => {
                             <Form.Label><h5>Storage Type :</h5></Form.Label>
                             <Form.Select aria-label="Default select example" value={storageType} onChange={(e) => setStorageType(e.target.value)} size="lg" required>
                               <option selected disabled value="">Select the Storage Type</option>
-                              <option value="Pellates">Pellates</option>
+                              <option value="Pallets">Pallets</option>
                               <option value="Floor Mezzanine">Floor Mezzanine</option>
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
@@ -150,7 +171,7 @@ const MainScreen2 = ({ cityLocation }) => {
                             <Form.Label><h5>UOM :</h5></Form.Label>
                             <Form.Select aria-label="Default select example" value={uom} onChange={(e) => setUOM(e.target.value)} size="lg" required>
                               <option selected disabled value="">Select the UOM</option>
-                              <option value="Pellates">Pellates</option>
+                              <option value="Pallets">Pallets</option>
                               <option value="Tons">Tons</option>
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">

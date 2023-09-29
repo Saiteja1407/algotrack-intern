@@ -1,0 +1,8 @@
+.mainscreen-city-card:hover{
+    transform: scale(1.05); /* Increase size on hover */
+  background-color: silver;
+}
+
+.mainscreen-city-card{
+    background-color: white;
+}

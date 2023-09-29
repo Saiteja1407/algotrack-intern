@@ -40,7 +40,7 @@ function CustomerOrderDetails(){
                   Dates and Times:
                </div>
                <div>
-                  <b>Ordered</b>   :
+                  <b>Ordered</b>   : {orderDetails.length > 0 && orderDetails[0].order_placed_date}
                </div>
                <div>
                   <b>Executed</b> :
@@ -52,7 +52,7 @@ function CustomerOrderDetails(){
                <div className="detailsheading">Product Details:</div>
                <div className="productdetails">
                   <div>
-                     <b>Name:</b>
+                     <b>Name:</b>{orderDetails.length > 0 && orderDetails[0].product_details}
                   </div>
                   <div>
                      <b>Quantity:</b> 
@@ -64,7 +64,7 @@ function CustomerOrderDetails(){
              <hr />
                <div className="warehousedetails">Warehouse Details:</div>
                   <div>
-                    <b>Id :</b> 
+                    <b>Id :</b> product_details
                   </div>
                   <div>
                      <b>Name :</b> 

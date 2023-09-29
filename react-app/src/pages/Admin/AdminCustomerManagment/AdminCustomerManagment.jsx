@@ -1,16 +1,33 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { Row,Col,Container } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import './AdminCustomerManagment.css';
 import Table from 'react-bootstrap/Table';
-import { verifiedcustomers } from "../../Customer/CustomerMainScreen/orderdummydata";
+import axios from "axios";
+import {useParams} from 'react-router-dom'
 
 let AdminCustomerManagment = () =>{
-
-     function handleDelete(){
+  const {id}=useParams();
+  const [CustomersData,setCustomersData]=useState([])
+     async function handleDelete(id){
       // delete customer entry from data base
-     }
+      const response= await axios.delete(`${process.env.REACT_APP_API}/admin/customer/management/${id}`);
 
+      console.log("Customer deleted successfully:", response.data);
+     }
+     useEffect(() => {
+      const fetchOrderDetails = async () => {
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_API}/admin/customer/management/${id}`);
+          setCustomersData(response.data.data);
+          console.log(response.data.data)
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      fetchOrderDetails();
+    }, []);
 
     return(
         <>
@@ -36,15 +53,15 @@ let AdminCustomerManagment = () =>{
                        </tr>
                     </thead>
                      <tbody className="center" size="lg">
-                     { verifiedcustomers.map((val) =>(
+                     { CustomersData.map((val) =>(
                            <tr>
-                            <><td>{val.customerid}</td>
-                            <td>{val.customername}</td>
-                            <td>{val.customercompanyname}</td>  
-                            <td>{val.customerdesignation}</td> 
-                            <td>{val.customermobilenumber}</td> 
-                            <td>{val.customeremailid}</td>
-                            <td> <Button onClick={handleDelete} variant="danger">Delete</Button> </td> </>  
+                            <><td>{val.customer_id}</td>
+                            <td>{val.customer_name}</td>
+                            <td>{val.customer_company_name}</td>  
+                            <td>{val.customer_designation}</td> 
+                            <td>{val.customer_mobile}</td> 
+                            <td>{val.customer_emailid}</td>
+                            <td> <Button onClick={()=>handleDelete(val.customer_id)} variant="danger">Delete</Button> </td> </>  
                             </tr> 
                        ))} 
                      </tbody>

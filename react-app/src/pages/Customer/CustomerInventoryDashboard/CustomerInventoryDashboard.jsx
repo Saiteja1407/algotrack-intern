@@ -6,9 +6,16 @@ import Table from 'react-bootstrap/Table';
 import { inventorydetails } from "../CustomerMainScreen/orderdummydata";
 import { useNavigate,useParams } from "react-router-dom";
 import axios from "axios";
+import SearchBar from "../../../components/SearchBar";
 
 
 let CustomerInventoryDashboard = () =>{
+     // searchbar
+  const [orders, setOrders] = useState([]);             // Holds all orders
+  const [filteredOrders, setFilteredOrders] = useState([]);// Holds filtered orders
+  const [searchQuery, setSearchQuery] = useState('');      // Holds the search query
+
+      
             const Navigate=useNavigate();
             const {id}=useParams();
             const [inventoryTable,setInventoryTable]=useState([]);
@@ -17,6 +24,8 @@ let CustomerInventoryDashboard = () =>{
                try {
                  const response = await axios.get(`${process.env.REACT_APP_API}/customer/inventory/dashboard/${id}`);
                  setInventoryTable(response.data.data);
+                 setOrders(response.data.data);
+          setFilteredOrders(response.data.data);
                  console.log(response.data.data[0])
                } catch (error) {
                  console.error('Error fetching order details:', error);
@@ -26,6 +35,20 @@ let CustomerInventoryDashboard = () =>{
              fetchOrderDetails();
            }, [id]);
       
+            // Handle changes in the search bar input
+  const handleSearchChange = (e) => {
+    const searchQuery = e.target.value;
+    setSearchQuery(searchQuery);
+    filterOrders(searchQuery);
+  };
+
+    // Filter orders based on the search query
+    const filterOrders = (searchQuery) => {
+      const filteredOrders = orders.filter((inventory) =>
+        inventory.inventory_id.toString().includes(searchQuery)
+      );
+      setFilteredOrders(filteredOrders);
+    };
 
       function handleClick(id){
          Navigate(`/customer/inventory/history/${id}`);
@@ -34,7 +57,9 @@ let CustomerInventoryDashboard = () =>{
     return(
         <>
           <Container className="mb-4">
-          
+          <Row className="mb-0">
+             <SearchBar PlaceHolder="serach by order ID" value={searchQuery} onChange={handleSearchChange}/>
+          </Row>
               <Row>
                  <Row>
                     <Col xs={10} md={6} className="inventorydetailscoloumn mx-auto">Inventory DashBoard</Col>
@@ -66,7 +91,7 @@ let CustomerInventoryDashboard = () =>{
                        </tr>
                     </thead>
                      <tbody className="center" size="lg">
-                     { inventoryTable.map((val) =>(
+                     { filteredOrders.map((val) =>(
                            <tr>
                             <><td>{val.inventory_id}</td>
                             <td>{val.total_inventory_units}</td>

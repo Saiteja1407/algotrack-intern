@@ -1,16 +1,34 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { Row,Col,Container } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import './AdminOrdersDashboard.css';
 import Table from 'react-bootstrap/Table';
-import { orderdetails } from "../../Customer/CustomerMainScreen/orderdummydata";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
+import axios from "axios";
 
 let AdminOrdersDashboard = () =>{
-      const Navigate=useNavigate();
-     function handleMoreDetails(){
-        Navigate('/admin/orders/details');
-     }
+   const [OrderData,setOrderData]=useState([])
+    const Navigate=useNavigate();
+    const {id}=useParams();
+    useEffect(() => {
+      const fetchOrderDetails = async () => {
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_API}/admin/orders/dashboard/${id}`);
+          setOrderData(response.data.data);
+          console.log(response.data.data)
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      fetchOrderDetails();
+    }, [id]);
+       
+       function handleClick(id){
+           Navigate(`/admin/order/details/${id}`);
+       }
+      
+     
 
     return(
         <>
@@ -37,14 +55,14 @@ let AdminOrdersDashboard = () =>{
                        </tr>
                     </thead>
                      <tbody className="center" size="lg">
-                     { orderdetails.map((val) =>(
+                     { OrderData.map((val) =>(
                            <tr>
-                            <><td>{val.orderid}</td>
-                            <td>{val.productname}</td>
-                            <td>{val.productunits}</td>  
-                            <td>{val.orderdate}</td> 
-                            <td>{val.ordersstatus}</td> 
-                            <td> <Button onClick={handleMoreDetails} variant="danger">More Details</Button> </td> </>  
+                            <><td>{val.order_id}</td>
+                            <td>{val.product_details}</td>
+                            <td>{val.product_units}</td>  
+                            <td>{val.order_placed_date}</td> 
+                            <td>{val.order_status}</td> 
+                            <td> <Button onClick={()=>handleClick(val.order_id)} variant="danger">More Details</Button> </td> </>  
                             </tr> 
                        ))} 
                      </tbody>

@@ -8,6 +8,7 @@ import cors from 'cors';
 import authRoutes from './routes/authRoute.js';
 import mysqlRouter from './api/customers/customer.routes.js';
 import partnerRouter from './api/partners/partner.routes.js';
+import adminRouter from './api/admin/admin.routes.js';
 
 
 //database connection --------------
@@ -23,6 +24,7 @@ app.use(morgan('dev'));
 // app.use('/',authRoutes);
 app.use('/',mysqlRouter);
 app.use('/',partnerRouter);
+app.use('/',adminRouter)
 
 //rest api
 app.get('/',(req,res)=>{

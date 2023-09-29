@@ -121,3 +121,42 @@ export const getCustomerInventoryDetails=(id,callBack)=>{
         }
     )
 }
+
+
+export const getSearchedLocations=(body,callBack)=>{
+    const storageType='available_dry_capacity';
+    if(body.temperatureRange=='Frozen'){
+        storageType='available_frozen_capacity'
+    }
+    else if(body.temperatureRange=='Chiller'){
+      storageType='available_chiller_capacity'
+    }
+    pool.query(
+        `select * from warehouse where city=? and warehouse_UOM=? and ?>=?`,
+        [body.city,
+         body.uom,
+         storageType,
+         body.numberOfUnits
+        ],
+        (err,results)=>{
+            if(err){
+                return callBack(err);
+            }
+            return callBack(null,results);
+        }
+    );
+}
+
+
+export const getCustomerWarehouseDetails=(warehouseId,callBack)=>{
+   pool.query(
+    `select * from warehouse where warehouse_id=?`,
+    [warehouseId],
+    (err,results)=>{
+        if(err){
+            return callBack(err);
+        }
+        return callBack(null,results);
+    }
+   );
+}
