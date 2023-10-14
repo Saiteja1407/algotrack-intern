@@ -1,8 +1,11 @@
 import React,{useState} from 'react';
-import { Navigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 import './FacilityOnboarding.css'
+import axios from 'axios';
 
 function FacilityOnboarding(){
+    const {id,partnerId}=useParams();
+    const navigate=useNavigate();
     const [inputs,setInputs]=useState({
         location1:"",
         landmark:"",
@@ -25,18 +28,24 @@ function FacilityOnboarding(){
         const {name,value}=e.target;
         setInputs(values => ({ ...values, [name] : value}))
     }
-    function handleSubmit(e){
-        console.log(inputs)
+    async function handleSubmit(e){
         e.preventDefault();
+        console.log(inputs)
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API}/admin/${id}/facilityonboarding/${partnerId}`, inputs);
+            console.log(response.data.data)
+            // navigate(`/admin/${id}/facilityonboarding/${response.data.data}`);
+            return response.data
+          } catch (error) {
+            throw error;
+          }
     }
     const stateoptions=["Ap","TS"]
     const UOMoptions=["Pallets","Tons"];
     function dropDown(option){
         return <option>{option}</option>
     }
-    function handleclick(){
-        //Navigate
-    }
+    
     return <div>
         <div className='facility-onboarding-wrapper bg-dark d-flex align-items-center justify-content-center w-100'>
             <div className='facility-onboarding-login shadow'>
@@ -63,7 +72,7 @@ function FacilityOnboarding(){
                         <div className='invalid-feedback'>Enter the Pincode</div>
                     </div>
                     <div className="form-floating was-validated mb-3">
-                        <input onChange={handleChange} name='city' type="number" className="form-control" id="floatingInput" placeholder="Town,City" value={inputs.city} required/>
+                        <input onChange={handleChange} name='city' type="text" className="form-control" id="floatingInput" placeholder="Town,City" value={inputs.city} required/>
                         <label for="floatingInput">Town,City</label>
                         <div className='invalid-feedback'>Enter the Town,City</div>
                     </div>
@@ -133,7 +142,7 @@ function FacilityOnboarding(){
                     <label className='facilityonboardingfont-weight form-label'>Contract copy with partner :</label>
                     <input onChange={handleChange} name='contractCopy' type="file" className="form-control" value={inputs.contractCopy} required/>
                 </div>
-                <button type ='submit' onClick={handleclick} className='btn btn-success w-100 mt-2'>Submit</button>
+                <button type ='submit'  className='btn btn-success w-100 mt-2'>Submit</button>
             </form>
             </div>
         </div>

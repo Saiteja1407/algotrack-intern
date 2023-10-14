@@ -1,17 +1,17 @@
-import React, { useEffect ,useState} from 'react'
+import React, { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import {Carousel} from 'react-bootstrap';
-import "./CustomerWarehouseDetails.css";
+import { Carousel } from 'react-bootstrap';
+import './CustomerWarehouseDetails.css';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
-import { useNavigate, useParams ,useLocation} from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 const CustomerWarehouseDetails = () => {
-      const {id,warehouseId}=useParams();
+  const {id,warehouseId}=useParams();
       const [warehouseDetails,setWarehouseDetails]=useState([]);
       const navigate=useNavigate();
       const location=useLocation();
@@ -44,77 +44,81 @@ const CustomerWarehouseDetails = () => {
         };
          postData()
       }
-      
+
+  // using arrays
+  const warehouseData = [
+    {
+      warehouseName: 'Uncle Warehouse',
+      warehouseLocation: 'Delhi',
+      warehousePrice: 'Dho Sav',
+      availableSpaceFrozen: 10,
+      availableSpaceChiller: 30,
+      availableSpaceDry: 20,
+      allowedProducts: 'Chocolate',
+      warehouseTempdata: '20',
+      licenseDocument: 'Okay',
+      images: [
+        'https://www.shutterstock.com/shutterstock/photos/1929800966/display_1500/stock-photo-interior-of-a-modern-warehouse-storage-of-retail-shop-with-pallet-truck-near-shelves-1929800966.jpg',
+        'https://www.shutterstock.com/shutterstock/photos/1929800966/display_1500/stock-photo-interior-of-a-modern-warehouse-storage-of-retail-shop-with-pallet-truck-near-shelves-1929800966.jpg',
+        'https://www.shutterstock.com/shutterstock/photos/1929800966/display_1500/stock-photo-interior-of-a-modern-warehouse-storage-of-retail-shop-with-pallet-truck-near-shelves-1929800966.jpg',
+      ],
+    },
+  ];
+
   return (
     <>
-        <Container>
-          <Card className="moredetails">
+      <Container>
+        <Card className="moredetails">
           <Card.Body>
-        <Row>
-            <Col xs={12} lg={5}>
-            <Carousel className="carousel" data-bs-theme="dark">
-      <Carousel.Item>
-        <img
-          className="d-block w-100 carousel-warehouse-imgs"
-          src="https://www.shutterstock.com/shutterstock/photos/1929800966/display_1500/stock-photo-interior-of-a-modern-warehouse-storage-of-retail-shop-with-pallet-truck-near-shelves-1929800966.jpg"
-          alt="First slide"
-        />
-      </Carousel.Item>
+            <Row>
+              <Col xs={12} lg={5}>
+                <Carousel className="carousel" data-bs-theme="dark">
+                  {warehouseData[0].images.map((image, imgIndex) => (
+                    <Carousel.Item key={imgIndex}>
+                      <img
+                        className="d-block w-100 carousel-warehouse-imgs"
+                        src={image}
+                        alt={`Warehouse Image ${imgIndex}`}
+                        key={imgIndex}
+                      />
+                    </Carousel.Item>
+                  ))}
+                </Carousel>
+              </Col>
+              <Col xs={12} lg={7}>
+                <Card className="detailsinfo">
+                  <ListGroup variant="flush">
+                    {warehouseData.map((warehouse, index) => (
+                      <React.Fragment key={index}>
+                        <ListGroup.Item>Warehouse name: {warehouse.warehouseName}</ListGroup.Item>
+                        <ListGroup.Item>Warehouse location: {warehouse.warehouseLocation}</ListGroup.Item>
+                        <ListGroup.Item>Warehouse price: {warehouse.warehousePrice}</ListGroup.Item>
+                        <ListGroup.Item>
+                          Avaliable space:
+                          <ul>
+                            <li>Frozen: {warehouse.availableSpaceFrozen}</li>
+                            <li>Chiller: {warehouse.availableSpaceChiller}</li>
+                            <li>Dry: {warehouse.availableSpaceDry}</li>
+                          </ul>
+                        </ListGroup.Item>
+                        <ListGroup.Item>Warehouse temperature data: {warehouse.warehouseTempdata}</ListGroup.Item>
+                        <ListGroup.Item>Allowed products: {warehouse.allowedProducts}</ListGroup.Item>
+                        <ListGroup.Item>License document: <input type='checkbox'/></ListGroup.Item>
+                      </React.Fragment>
+                    ))}
+                  </ListGroup>
 
-      <Carousel.Item>
-        <img
-          className="d-block w-100 carousel-warehouse-imgs"
-          src="https://www.shutterstock.com/shutterstock/photos/1929800966/display_1500/stock-photo-interior-of-a-modern-warehouse-storage-of-retail-shop-with-pallet-truck-near-shelves-1929800966.jpg"
-          alt="Second slide"
-        />
-      </Carousel.Item>
-
-      <Carousel.Item>
-        <img
-          className="d-block w-100 carousel-warehouse-imgs"
-          src="https://www.shutterstock.com/shutterstock/photos/1929800966/display_1500/stock-photo-interior-of-a-modern-warehouse-storage-of-retail-shop-with-pallet-truck-near-shelves-1929800966.jpg"
-          alt="Third slide"
-        />
-      </Carousel.Item>
-    </Carousel>
-    <br></br>
-    <br></br>
-    <div className="refeerOn-services">
-    <h5>Refer On Services</h5>
-    <div><input type="checkbox" />   Transportation</div>
-    <div><input type="checkbox" />   Cold Chain IOT's</div>
-    <div><input type="checkbox" />   Tradings</div>
-    </div>
-    </Col>
-    <Col xs={12} lg={7}>
-    
-    <Card className="detailsinfo">
-      <ListGroup variant="flush">
-        <ListGroup.Item>Warehouse name :</ListGroup.Item>
-        <ListGroup.Item>Warehouse location :</ListGroup.Item>
-        <ListGroup.Item>Warehouse price :</ListGroup.Item>
-        <ListGroup.Item>Avaliable space :
-       <ul>
-        <li>Frozen :</li>
-        <li>Chiller :</li>
-        <li>Dry :</li>
-       </ul></ListGroup.Item>
-        <ListGroup.Item>Warehouse temperature data :</ListGroup.Item>
-        <ListGroup.Item>Allowed products :</ListGroup.Item>
-        <ListGroup.Item>License document :</ListGroup.Item>
-      </ListGroup>
-      
-      <Button onClick={handleContact} className='contact-now col-5 col-sm-4 col-md-3 m-2' variant="secondary">Contact Now</Button>
-      
-      </Card>
-    </Col>
-    </Row>
-    </Card.Body>
-
-          </Card>
-          </Container>
+                  <Button onClick={handleContact} className="contact-now col-5 col-sm-4 col-md-3 m-2" variant="secondary">
+                    Contact Now
+                  </Button>
+                </Card>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+      </Container>
     </>
-  )
-}
+  );
+};
 
-export default CustomerWarehouseDetails
+export default CustomerWarehouseDetails;

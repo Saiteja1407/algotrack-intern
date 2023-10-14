@@ -1,22 +1,40 @@
-import React,{useState} from 'react';
-import { Navigate } from "react-router-dom";
-import './UpdateWarehouseDetails.css'
+import React,{useState,useEffect} from 'react';
+import { Navigate, useParams,useNavigate, useLocation } from "react-router-dom";
+import './UpdateWarehouseDetails.css';
+import axios from 'axios';
 
 function UpdateWarehouseDetails(){
+   const {id,warehouseId}=useParams();
+   const location=useLocation();
+   const {data}=location.state;
+  const navigate=useNavigate();
+
+  const fetchWarehouseDetails=async()=>{
+    const response= await axios.get(`${process.env.REACT_APP_API}/admin/${id}/updatewarehouse/${warehouseId}`);
+    
+    console.log(response.data.data);
+ }
+
+ useEffect(()=>{
+    console.log(data);
+   //fetchWarehouseDetails();
+ },[])
+
+
     const [inputs,setInputs]=useState({
         location1:"",
         landmark:"",
-        area:"",
-        pincode:"",
-        city:"",
-        state:"",
-        UOM:"",
-        totalFrozenCapacity:"",
-        totalChillerCapacity:"",
-        totalDryCapacity:"",
-        availableFrozenCapacity:"",
-        availableChillerCapacity:"",
-        availableDryCapacity:"",
+        area:data[0].street,
+        pincode:data[0].pincode,
+        city:data[0].city,
+        state:data[0].state,
+        UOM:data[0].warehouse_UOM       ,
+        totalFrozenCapacity:data[0].total_frozen_capacity        ,
+        totalChillerCapacity:data[0].total_chiller_capacity,
+        totalDryCapacity:data[0].total_dry_capacity        ,
+        availableFrozenCapacity:data[0].available_frozen_capacity        ,
+        availableChillerCapacity:data[0].available_chiller_capacity        ,
+        availableDryCapacity:data[0].available_dry_capacity        ,
         facilityImages:"",
         complianceDocuments:"",
         contractCopy:""
@@ -25,9 +43,12 @@ function UpdateWarehouseDetails(){
         const {name,value}=e.target;
         setInputs(values => ({ ...values, [name] : value}))
     }
-    function handleSubmit(e){
-        console.log(inputs)
+    async function handleSubmit(e){
         e.preventDefault();
+        console.log(inputs)
+        const response= await axios.post(`${process.env.REACT_APP_API}/admin/${id}/updateWarehouse/${warehouseId}`,inputs);
+        console.log(response);
+
     }
     const stateoptions=["Ap","TS"]
     const UOMoptions=["Pallets","Tons"];

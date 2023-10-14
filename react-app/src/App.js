@@ -51,6 +51,7 @@ import PartnerOrderDetails from "./pages/Partner/PartnerOrderDetails/PartnerOrde
 import AdminOrderDetails from "./pages/Admin/AdminOrderDetails/AdminOrderDetails";
 import AdminNavbar from "./components/admin/AdminNavbar";
 import CustomerMainScreen1 from "./pages/Customer/NewOrder/CustomerMainScreen1";
+import AdminPartnerManagement from "./pages/Admin/AdminPartnerManagement/AdminPartnerManagement";
 function App() {
   return (
     <>
@@ -112,17 +113,18 @@ function App() {
         <Route path="/admin/" element={<AdminNavbar/>}>
 
    {/* pending     <Route path="mainscreen" element={<AdminMainScreen/>}></Route> */}
-        <Route path="warehouses" element={<AdminWarehouses/>}/>
-        <Route path="/admin/warehouse/details" element={<AdminWarehouseDetails/>}/>
+        <Route path=":id/orders/dashboard" element={<AdminOrdersDashboard/>}/>
+        <Route path=":id/order/details/:orderId" element={<AdminOrderDetails/>}/>
+        <Route path=":id/:partnerId/warehouses" element={<AdminWarehouses/>}/>
+        <Route path="/admin/:id/:partnerId/warehouse/:warehouseId/details" element={<AdminWarehouseDetails/>}/>
         <Route path="/admin/sensordevices" element={<AdminSensorDevices/>}/>
         <Route path="/admin/addwarehouse" element={<AddWarehouse/>}/>
-        <Route path="/admin/updatewarehouse" element={<UpdateWarehouseDetails/>}/>
-        <Route path="customer/management/:id" element={<AdminCustomerManagment/>}/>
-        <Route path="customer/verification/" element={<AdminCustomerVerification/>}/>
-        <Route path="orders/dashboard/:id" element={<AdminOrdersDashboard/>}/>
-        <Route path="order/details/:id" element={<AdminOrderDetails/>}/>
-        <Route path="partneronboarding" element={<PartnerOnboarding/>}/>
-        <Route path="facilityonboarding" element={<FacilityOnboarding/>}/>
+        <Route path=":id/updatewarehouse/:warehouseId" element={<UpdateWarehouseDetails/>}/>
+        <Route path=":id/customer/management" element={<AdminCustomerManagment/>}/>
+        <Route path=":id/partner/management/" element={<AdminPartnerManagement/>}/>
+        <Route path=":id/customer/verification/" element={<AdminCustomerVerification/>}/>
+        <Route path=":id/partneronboarding" element={<PartnerOnboarding/>}/>
+        <Route path=":id/facilityonboarding/:partnerId" element={<FacilityOnboarding/>}/>
         <Route path="addsensor" element={<AddSensor/>}/>
         <Route path="updatesensor" element={<UpdateSensor/>}/>
         </Route>

@@ -13,7 +13,7 @@ let AdminOrdersDashboard = () =>{
     useEffect(() => {
       const fetchOrderDetails = async () => {
         try {
-          const response = await axios.get(`${process.env.REACT_APP_API}/admin/orders/dashboard/${id}`);
+          const response = await axios.get(`${process.env.REACT_APP_API}/admin/${id}/orders/dashboard`);
           setOrderData(response.data.data);
           console.log(response.data.data)
         } catch (error) {
@@ -24,8 +24,8 @@ let AdminOrdersDashboard = () =>{
       fetchOrderDetails();
     }, [id]);
        
-       function handleClick(id){
-           Navigate(`/admin/order/details/${id}`);
+       function handleClick(orderId){
+           Navigate(`/admin/${id}/order/details/${orderId}`);
        }
       
      

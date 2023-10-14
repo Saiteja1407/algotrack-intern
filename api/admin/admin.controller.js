@@ -1,5 +1,6 @@
-import {AdminOrdersDashboard, CustomerManagement, CustomerVerification, DeleteCustomer, VerifyCustomer, getAdminById, getAdminOrderDetails, updateOrderDetails} from './admin.services.js'
-import { compareSync } from 'bcrypt';
+import {AdminOrdersDashboard, CustomerManagement, CustomerVerification, DeleteCustomer, VerifyCustomer,
+   getPartners, facilityOnboard, getAdminById, getAdminOrderDetails, partnerOnboard, updateOrderDetails, getAdminPartnerWarehouses, getAdminWarehouseDetails, updateAdminWarehouseDetails} from './admin.services.js'
+import {  compareSync, genSaltSync, hashSync } from 'bcrypt';
 export const adminLoginController = (req, res) => {
     const body = req.body;
 
@@ -51,9 +52,9 @@ export const adminOrdersDashboardController=(req,res)=>{
  }
 
  export const adminOrderDetailsController=(req,res)=>{
-    const id=req.params.id;
-    console.log(id);
-    getAdminOrderDetails(id,(err,results)=>{
+    const {id,orderId}=req.params;
+    console.log(orderId);
+    getAdminOrderDetails(orderId,(err,results)=>{
       if(err){
          console.log(err);
          return res.send({
@@ -73,10 +74,11 @@ export const adminOrdersDashboardController=(req,res)=>{
 
 
  export const updateOrderDetailsController=(req,res)=>{
-       const id=req.params.id;
+       const {id,orderId}=req.params;
+       console.log(orderId);
        const status=req.body.status;
     //    const obj={id, status}
-       updateOrderDetails(id,status,(err,results)=>{
+       updateOrderDetails(id,orderId,status,(err,results)=>{
         if(err){
             console.log(err);
             return res.send({
@@ -116,8 +118,8 @@ export const adminOrdersDashboardController=(req,res)=>{
 }
 
 export const deleteCustomerController=(req,res)=>{
-   const customerId=req.params.id;
-   DeleteCustomer(customerId,(err,results)=>{
+   const {id,customerId}=req.params;
+   DeleteCustomer(id,customerId,(err,results)=>{
       if(err){
           console.log(err);
           return res.send({
@@ -156,8 +158,9 @@ export const customerVerificationController=(req,res)=>{
 
 export const verifyCustomerController=(req,res)=>{
    const body=req.body;
+   const adminId=req.params.id;
    console.log(body)
-   VerifyCustomer(body,(err,results)=>{
+   VerifyCustomer(body,adminId,(err,results)=>{
       if(err){
          console.log(err);
          return res.send({
@@ -168,4 +171,121 @@ export const verifyCustomerController=(req,res)=>{
          data:results,
       })
    })
+}
+
+export const partnerOnboardingController=(req,res)=>{
+   const adminId=req.params.id;
+   const body=req.body;
+   const salt=genSaltSync(10);
+   body.password=hashSync(body.password,salt);
+   partnerOnboard(body,adminId,(err,results)=>{
+      if(err){
+         console.log(err);
+         return res.send({
+            message:"error in partnerOnboarding"
+         });
+      }
+      return res.send({
+         data:results.insertId,
+      })
+   })
+}
+
+export const facilityOnboardingController=(req,res)=>{
+   const {id,partnerId}=req.params;
+   const body=req.body;
+   console.log(body);
+   facilityOnboard(body,id,partnerId,(err,results)=>{
+      if(err){
+         console.log(err);
+         return res.send({
+            message:"error in facility Onboarding"
+         });
+      }
+      return res.send({
+         data:results,
+      })
+   })
+}
+
+export const partnerManagementController=(req,res)=>{
+   const {id}=req.params;
+   getPartners(id,(err,results)=>{
+      if(err){
+         console.log(err);
+         return res.send({
+            message:"error in admin partner management"
+         });
+      }
+      if(!results){
+         return res.send({
+            message:"no partners yet"
+         });
+      }
+      return res.send({
+         data:results,
+      })
+   })
+}
+
+export const adminWarehousesController=(req,res)=>{
+   const {id,partnerId}=req.params;
+   getAdminPartnerWarehouses(id,partnerId,(err,results)=>{
+      if(err){
+         console.log(err);
+         return res.send({
+            message:"error in admin partner warehouses"
+         });
+      }
+      if(!results){
+         return res.send({
+            message:"no partner's warehouses yet"
+         });
+      }
+      return res.send({
+         data:results,
+      })
+   })
+}
+
+export const adminWarehouseDetailsController=(req,res)=>{
+   const {id,partnerId,warehouseId}=req.params;
+   getAdminWarehouseDetails(id,partnerId,warehouseId,(err,results)=>{
+      if(err){
+         console.log(err);
+         return res.send({
+            message:"error in admin partner warehouse details"
+         });
+      }
+      if(!results){
+         return res.send({
+            message:"no warehouse with this Id yet"
+         });
+      }
+      return res.send({
+         data:results,
+      })
+   })
+}
+
+export const adminUpdateWarehouseDetailsController=(req,res)=>{
+     const {id,warehouseId}=req.params;
+     const body=req.body;
+     console.log(body);
+     updateAdminWarehouseDetails(id,warehouseId,body,(err,results)=>{
+      if(err){
+         console.log(err);
+         return res.send({
+            message:"error in admin update warehouse details"
+         });
+      }
+      if(!results){
+         return res.send({
+            message:"no warehouse with this Id yet"
+         });
+      }
+      return res.send({
+         data:results,
+      })
+     })
 }

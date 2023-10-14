@@ -9,25 +9,31 @@ import {useParams} from 'react-router-dom'
 let AdminCustomerManagment = () =>{
   const {id}=useParams();
   const [CustomersData,setCustomersData]=useState([])
-     async function handleDelete(id){
-      // delete customer entry from data base
-      const response= await axios.delete(`${process.env.REACT_APP_API}/admin/customer/management/${id}`);
 
+  const fetchCustomerDetails = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API}/admin/${id}/customer/management`);
+      setCustomersData(response.data.data);
+      console.log(response.data.data)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCustomerDetails();
+  }, []);
+
+
+  
+     async function handleDelete(customerId){
+      // delete customer entry from data base
+      const response= await axios.patch(`${process.env.REACT_APP_API}/admin/${id}/customer/management/${customerId}`);
+      fetchCustomerDetails();
       console.log("Customer deleted successfully:", response.data);
      }
-     useEffect(() => {
-      const fetchOrderDetails = async () => {
-        try {
-          const response = await axios.get(`${process.env.REACT_APP_API}/admin/customer/management/${id}`);
-          setCustomersData(response.data.data);
-          console.log(response.data.data)
-        } catch (error) {
-          console.error(error);
-        }
-      };
 
-      fetchOrderDetails();
-    }, []);
+    
 
     return(
         <>

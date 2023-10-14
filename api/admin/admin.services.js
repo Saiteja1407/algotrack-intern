@@ -40,11 +40,11 @@ export const getAdminOrderDetails=(id,callBack)=> {
     );
 }
 
-export const updateOrderDetails=(id,status,callBack)=>{
+export const updateOrderDetails=(id,orderId,status,callBack)=>{
     // const {id,status}=obj;
     pool.query(
-        `update order_details set order_status=? where order_id=?`,
-        [status,id],
+        `update order_details set order_status=? ,admin_id=? where order_id=?`,
+        [status,id,orderId],
         (err,results,fields)=>{
             if(err){
                 return callBack(err);
@@ -57,7 +57,7 @@ export const updateOrderDetails=(id,status,callBack)=>{
 
 export const CustomerManagement=(callBack)=>{
     pool.query(
-        `select * from customer where verification_status=1`,
+        `select * from customer where verification_status=1 and activity_status=1`,
         [],
         (err,results,fields)=>{
             if(err){
@@ -68,10 +68,10 @@ export const CustomerManagement=(callBack)=>{
     );
 }
 
-export const DeleteCustomer=(customerId,callBack)=>{
+export const DeleteCustomer=(adminId,customerId,callBack)=>{
     pool.query(
-        `delete from customer where customer_id=?`,
-        [customerId],
+        `update customer set activity_status=0,admin_id=? where customer_id=?`,
+        [adminId,customerId],
         (err,results,fields)=>{
             if(err){
                return callBack(err);
@@ -83,7 +83,7 @@ export const DeleteCustomer=(customerId,callBack)=>{
 
 export const CustomerVerification=(callBack)=>{
     pool.query(
-        `select * from customer where verification_status=0`,
+        `select * from customer where verification_status=0 and activity_status=1`,
         [],
         (err,results,fields)=>{
             if(err){
@@ -94,13 +94,14 @@ export const CustomerVerification=(callBack)=>{
     );
 }
 
-export const VerifyCustomer=(body,callBack)=>{
+export const VerifyCustomer=(body,adminId,callBack)=>{
     const id=body.CustomerId;
     const name=body.name;
+    console.log(name);
     if(name=="verify"){
         pool.query(
-            `update customer set verification_status=1 where customer_id=?`,
-            [id],
+            `update customer set verification_status=1,admin_id=? where customer_id=?`,
+            [adminId,id],
             (err,results,fields)=>{
                 if(err){
                     return callBack(err);
@@ -111,7 +112,7 @@ export const VerifyCustomer=(body,callBack)=>{
     }
     else{
         pool.query(
-            `update customer set active_status=0 where customer_id=?`,
+            `update customer set activity_status=0 where customer_id=?`,
             [id],
             (err,results,fields)=>{
                 if(err){
@@ -122,4 +123,113 @@ export const VerifyCustomer=(body,callBack)=>{
           );
     }
   
+}
+
+
+export const partnerOnboard=(body,adminId,callBack)=>{
+  pool.query(
+    `insert into partner values(?,?,?,?,?,?,?,?,?,?,?,?)`,
+    [body.partnerID,
+        body.spocName,
+        body.spocPhoneNumber,
+        body.companyName,
+        body.spocDesignation,
+        body.password,
+        body.spocEmail,
+        body.escalationName,
+        body.escalationPhoneNumber,
+        body.escalationDesignation,
+        body.escalationEmail,
+        adminId
+        ],
+    (err,results)=>{
+        if(err){
+            return callBack(err);
+        }
+        return callBack(null,results);
+    }
+  );
+}
+
+export const facilityOnboard=(body,adminId,partnerId,callBack)=>{
+   pool.query(
+    `
+    insert into warehouse values(null,null,null,null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,1,1)`,
+    [
+        body.UOM,
+        body.totalFrozenCapacity,
+        body.totalDryCapacity,
+        body.totalChillerCapacity,
+        body.availableFrozenCapacity,
+        body.availableDryCapacity,
+        body.availableChillerCapacity,
+        body.complianceDocuments,
+        partnerId,
+        adminId,
+        body.state,
+        body.city,
+        body.pincode,
+        body.area,
+    ],
+    (err,results)=>{
+        if(err){
+            return callBack(err);
+        }
+        return callBack(null,results);
+    }
+   );
+}
+
+
+export const getPartners=(adminId,callBack)=>{
+    pool.query(
+        `select * from partner`,
+        [],
+        (err,results)=>{
+            if(err){
+                return callBack(err);
+            }
+            return callBack(null,results);
+        }
+    );
+}
+
+
+export const getAdminPartnerWarehouses=(adminId,partnerId,callBack)=>{
+    pool.query(
+        `select * from warehouse where partner_id=?`,
+        [partnerId],
+        (err,results)=>{
+            if(err){
+                return callBack(err);
+            }
+            return callBack(null,results);
+        }
+    );
+}
+
+export const getAdminWarehouseDetails=(adminId,partnerId,warehouseId,callBack)=>{
+    pool.query(
+        `select * from warehouse where warehouse_id=?`,
+        [warehouseId],
+        (err,results)=>{
+            if(err){
+                return callBack(err);
+            }
+            return callBack(null,results);
+        }
+    );
+}
+
+export const updateAdminWarehouseDetails=(adminId,warehouseId,body, callBack)=>{
+    pool.query(
+        ``,
+        [],
+        (err,results)=>{
+            if(err){
+                return callBack(err);
+            }
+            return callBack(null,results);
+        }
+    );
 }

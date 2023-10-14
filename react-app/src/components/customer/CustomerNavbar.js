@@ -1,15 +1,15 @@
 import React from 'react'
-import { NavLink,Link } from 'react-router-dom'
+import { NavLink,Link,useParams } from 'react-router-dom'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 const CustomerNavbar = () => {
-
+        const {id}=useParams();
   return (
     <>
         <nav className="navbar navbar-expand-lg bg-body-secondary mx-5 mt-2 mb-4 rounded">
   <div className="container-fluid">
-    <NavLink className='navbar-brand mx-3' to='/customer/mainscreen'>Home</NavLink>
+    <NavLink className='navbar-brand mx-3' to={`/customer/mainscreen/${id}`}>Home</NavLink>
 
 
     <div className='d-flex'>

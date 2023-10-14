@@ -1,0 +1,9 @@
+.partnermanagementcoloumn{
+    min-width: 40%;
+    background-color: #424242;
+    color: white;
+    height: 3rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 2em;
+}

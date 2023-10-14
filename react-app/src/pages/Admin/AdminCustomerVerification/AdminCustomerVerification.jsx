@@ -6,20 +6,35 @@ import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import { registeredcustomers } from "../../Customer/CustomerMainScreen/orderdummydata";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 let AdminCustomerVerification = () =>{
-  const [data,setData]=useState([])
+  const [data,setData]=useState([]);
+  const {id}=useParams();
   const [isChecked, setIsChecked] = useState(false);
-      function handleDelete(customerId){
+  
+  const fetchData = async () => {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_API}/admin/${id}/customer/verification`);
+        setData(response.data.data);
+        console.log(response.data.data)
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+  
+  
+  function handleDelete(customerId){
         // delete customer entry from data base
-        const id={
+        const data={
           CustomerId:customerId,
           name:"delete"
         }
         const postData = async () => {
           try {
-            const response = await axios.post(`${process.env.REACT_APP_API}/admin/customer/verification`, id);
-            
+            const response = await axios.post(`${process.env.REACT_APP_API}/admin/${id}/customer/verification`, data);
+            fetchData();
             return response.data
           } catch (error) {
             throw error;
@@ -28,14 +43,14 @@ let AdminCustomerVerification = () =>{
         postData();
       }
       function handleVerification(customerId){
-        const id={
+        const data={
           CustomerId:customerId,
           name:"verify"
         }
         const postData = async () => {
           try {
-            const response = await axios.post(`${process.env.REACT_APP_API}/admin/customer/verification`, id);
-            
+            const response = await axios.post(`${process.env.REACT_APP_API}/admin/${id}/customer/verification`, data);
+            fetchData();
             return response.data
           } catch (error) {
             throw error;
@@ -44,18 +59,8 @@ let AdminCustomerVerification = () =>{
         postData();
        }
       useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`${process.env.REACT_APP_API}/admin/customer/verification`);
-                setData(response.data.data);
-                console.log(response.data.data)
-            } catch (error) {
-                console.log(error);
-            }
-        };
-    
         fetchData();
-    }, []);
+    }, [id]);
 
     return(
         <>

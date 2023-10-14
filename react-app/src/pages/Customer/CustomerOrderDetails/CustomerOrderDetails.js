@@ -12,7 +12,7 @@ function CustomerOrderDetails(){
         try {
           const response = await axios.get(`${process.env.REACT_APP_API}/customer/order/details/${id}`);
           setOrderDetails(response.data.data);
-          console.log(orderDetails[0].order_status)
+          console.log(response.data.data);
         } catch (error) {
           console.error('Error fetching order details:', error);
         }
@@ -25,59 +25,33 @@ function CustomerOrderDetails(){
           navigate(`/customer/inventory/dashboard/${id}`)
     }
 
-     return(
-      
-        <div >
-              <h2 className="orderdetails">
-                  Order Details
-              </h2>
-             <div className="orderdetailsbox mb-5">
-               <div><b>order id:</b>{orderDetails.length > 0 && orderDetails[0].order_id}</div>
-               
-            {/* pending */}   <div className="status"><b>Status:</b>{orderDetails.length > 0 && orderDetails[0].order_status}</div>
-               <hr/>
-               <div className="dandt">
-                  Dates and Times:
-               </div>
-               <div>
-                  <b>Ordered</b>   : {orderDetails.length > 0 && orderDetails[0].order_placed_date}
-               </div>
-               <div>
-                  <b>Executed</b> :
-               </div>
-               <div>
-                  <b>completed</b>:
-               </div>
-               <hr />
-               <div className="detailsheading">Product Details:</div>
-               <div className="productdetails">
-                  <div>
-                     <b>Name:</b>{orderDetails.length > 0 && orderDetails[0].product_details}
+    return(
+      <div className='bg-light flex align-items-center justify-content-center'>
+          <div className=' container customeroderdetailsnewcontainer'>
+              <h3 className='mb-3'>Order Id: {orderDetails.length > 0 && orderDetails[0].order_id}  <span><button className='btn btn-primary ms-4' disabled>{orderDetails.length > 0 && orderDetails[0].order_status}</button></span></h3>
+              <div className='row'>
+                  <div className='col-md-5 customerborder me-5 p-2 ps-3 mb-2'>
+                      <h4 className='mb-3'>Order details:</h4>
+                      <p>Ordered Time:  {orderDetails.length > 0 && orderDetails[0].order_placed_date}</p>
+                      <p>Executed Time:</p>
+                      <p>Completed Time</p>
                   </div>
-                  <div>
-                     <b>Quantity:</b> 
+                  <div className='col-md-6 customerborder p-2 ps-3 mb-2'>
+                      <h4 className='mb-3'>Product Details:</h4>
+                      <p>Name of the Product: {orderDetails.length > 0 && orderDetails[0].product_details}</p>
+                      <p>Quantity:</p>
+                      <p>Type of storage:</p>
                   </div>
-                  <div>
-                     <b>Type of storage:</b>
-                  </div>
-               </div>
-             <hr />
-               <div className="warehousedetails">Warehouse Details:</div>
-                  <div>
-                    <b>Id :</b> product_details
-                  </div>
-                  <div>
-                     <b>Name :</b> 
-                  </div>
-               <div className="inventoryview">
-               <button onClick={()=>handleClick(orderDetails[0].order_id)}>
-               View Inventory
-               </button>
-               </div>
-               
-             </div>
-      
-        </div>
+              </div>
+              <div className='row col-md-12 mt-2 customerborder p-2 ps-2'>
+                  <h4 className='mb-3'>Warehouse details:</h4>
+                  <p>Warehouse Id:</p>
+              </div>
+              <div className='d-flex justify-content-center me-5'>
+                  <button className='btn btn-success mt-3' onClick={()=>handleClick(orderDetails[0].order_id)}>View Inventory</button>
+              </div>
+          </div>    
+      </div>
      )
 }
 export default CustomerOrderDetails;

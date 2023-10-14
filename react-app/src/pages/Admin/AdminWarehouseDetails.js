@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
@@ -7,9 +7,25 @@ import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import {Carousel} from 'react-bootstrap';
 import "./AdminWarehouseDetails.css";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
-function AdminWarehouseDetails()
-{
+function AdminWarehouseDetails(){
+
+  const {id,partnerId,warehouseId}=useParams();
+  const [warehouseDetails,setWarehouseDetails]=useState({});
+  const navigate=useNavigate();
+
+  const fetchWarehouseDetails=async()=>{
+     const response= await axios.get(`${process.env.REACT_APP_API}/admin/${id}/${partnerId}/warehouse/${warehouseId}/details`);
+     setWarehouseDetails(response.data.data);
+     console.log(response.data.data);
+  }
+
+  useEffect(()=>{
+    fetchWarehouseDetails();
+  },[])
+
   const carouselImages=[
     {
       id:1,
@@ -28,6 +44,11 @@ function AdminWarehouseDetails()
     },
     
   ]
+
+  const handleEdit=async()=>{
+      navigate(`/admin/${id}/updatewarehouse/${warehouseId}`,{state:{data:warehouseDetails}});
+  }
+
   return (
     <Container>
         <Card className="moredetails">
@@ -85,7 +106,7 @@ function AdminWarehouseDetails()
     </ListGroup>
     <div className="admin-warehouse-details-buttons">
 
-    <Button className='contact-now col-5 col-sm-4 col-md-3 m-2' variant="secondary">Edit details</Button>
+    <Button onClick={()=>{handleEdit()}} className='contact-now col-5 col-sm-4 col-md-3 m-2' variant="secondary">Edit details</Button>
     <Button className='contact-now col-5 col-sm-4 col-md-3 m-2' variant="secondary">Add Sensor Device</Button>
     <Button className='contact-now col-5 col-sm-4 col-md-3 m-2' variant="secondary">View Sensor Devices</Button>
     </div>

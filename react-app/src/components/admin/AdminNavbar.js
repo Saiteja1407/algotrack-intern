@@ -181,25 +181,25 @@ function AdminNavbar(){
    
     <div className='containeradmin'>
       <div className={showSidebar ? 'sidebar':'sidebar active'}>
-        <img src='https://zenprospect-production.s3.amazonaws.com/uploads/pictures/648076c8d776490001bbac7a/picture'  alt='logo'/>
+        <img src='/companyLogo.jpg'  alt='logo'/>
         
         <p>Admin Account</p>
         <hr />
         <ul className='sidebarcontent'>
           <li>
-          <Link to={`/admin/orders/dashboard/${id}`} className="link">Manage orders</Link>
+          <Link to={`/admin/${id}/orders/dashboard`} className="link">Manage orders</Link>
           </li>
           <li>
-          <Link to='' className="link">Verify New Customers</Link>
+          <Link to={`/admin/${id}/customer/verification`} className="link">Verify New Customers</Link>
           </li>
           <li>
-          <Link to={`/admin/customer/management/${id}`} className="link">Manage Customer</Link> 
+          <Link to={`/admin/${id}/customer/management`} className="link">Manage Customers</Link> 
           </li>
           <li>
-          <Link to='' className="link">Add New Partners</Link> 
+          <Link to={`/admin/${id}/partneronboarding`} className="link">Add New Partners</Link> 
           </li>
           <li>
-          <Link to='' className="link">Manage Partners</Link>
+          <Link to={`/admin/${id}/partner/management`} className="link">Manage Partners</Link>
           </li>
         </ul>
       </div>

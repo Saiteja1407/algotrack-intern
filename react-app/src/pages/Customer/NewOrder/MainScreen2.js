@@ -49,7 +49,9 @@ const MainScreen2 = () => {
   
       // Here you can perform any other actions with the form data, like sending it to a server, etc.
       const postData = async () => {
+        
         try {
+          console.log(formData);
           const response = await axios.post(`${process.env.REACT_APP_API}/customer/${id}/mainscreen2`, formData);
           const responseData = response.data.data;
 

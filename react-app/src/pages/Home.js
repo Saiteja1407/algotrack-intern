@@ -42,7 +42,7 @@ const Home = () => {
                 return (
                   <div className='item flexSB'>
                     <div className='img'>
-                      <img src={val.cover} alt='' />
+                      <img className='imgdec' src={val.cover} alt='' />
                     </div>
                     <div className='text'>
                       <h2>{val.title}</h2>

@@ -5,8 +5,11 @@ import { signUpMobileController, createUser, signUpEmailController,
     ,CustomerInventoryDashboardController,CustomerInventoryHistoryController
     ,CustomerMainscreen1Controller,CustomerMainscreen2Controller, CustomerWarehouseDetailsController
 ,CustomerWarehouseSelectionController} from "./customer.controller.js";
-
+import { requireSignIn } from "../../middlewares/authMiddlewares.js";
 const mysqlRouter=express.Router();
+import cookieParser from "cookie-parser";
+
+mysqlRouter.use(cookieParser());
 mysqlRouter.post('/customer/registration',createUser);
 mysqlRouter.post('/signup/mobile',signUpMobileController);
 mysqlRouter.post('/signup/email',signUpEmailController);

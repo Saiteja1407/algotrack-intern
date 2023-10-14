@@ -163,8 +163,8 @@ export const getCustomerWarehouseDetails=(warehouseId,callBack)=>{
 
 export const placeOrderToWarehouse=(body,id,warehouseId,warehouseName,partnerId,callBack)=>{
    pool.query(
-    `insert into order_details values(null,default,now(),NULL,NULL,NULL,?,?,?,?,?,?,?,?,?,?,?)`,
-    [
+    `insert into order_details values(null,default,now(),STR_TO_DATE(?,'%m/%d/%Y'),NULL,NULL,?,?,?,?,?,?,?,?,?,?,?)`,
+    [ body.selectedDate,
       warehouseId,
       warehouseName,
       id,
