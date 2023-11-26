@@ -21,12 +21,21 @@ const PartnerLogin = () => {
     const handleSubmit=(e)=>{
         const postData = async () => {
          try {
-           const response = await axios.post(`${process.env.REACT_APP_API}/login/partner`, inputs);
+           const response = await axios.post(`${process.env.REACT_APP_API}/login/partner`, inputs,
+           {
+            withCredentials: true,
+            
+           })
            Navigate(`/partner/mainscreen/${response.data.data}`);
            
            return response.data
          } catch (error) {
-           throw error;
+            if(error.request && error.request.status===403){
+                alert('you are not registered with us or invalid credentials')
+              }
+              else if(error.request && error.request.status===402){
+                alert('Invalid password')
+              }
          }
        };
        postData();
@@ -39,13 +48,13 @@ const PartnerLogin = () => {
         <h2 className='mb-3'>Partner Login</h2>
             <form className='needs-validation' onSubmit={handleSubmit}>
                 <div className="form-floating was-validated mb-3">
-                    <input type="text" className="form-control" name='partnerId' onChange={handleChange} value={inputs.partnerId} id="floatingInput" placeholder="User ID" required/>
+                    <input type="text" className="form-control" name='partnerId' onChange={handleChange} value={inputs.partnerId} placeholder="User ID" required/>
                     <label for="floatingInput">User ID</label>
                     <div className='invalid-feedback'>Enter your User ID</div>
                 </div>
                 <div className='input-group mb-3 was-validated'>
                     <div className="form-floating">
-                            <input onChange={handleChange} name='password' type={visible ? "text" : "password"} className="form-control" id="floatingPassword" placeholder="Password" value={inputs.password} required/>
+                            <input onChange={handleChange} name='password' type={visible ? "text" : "password"} className="form-control" placeholder="Password" value={inputs.password} required/>
                             <label htmlFor="floatingPassword">Password</label>
                             <div className='invalid-feedback'>Enter the Password</div>
                     </div>
@@ -58,4 +67,4 @@ const PartnerLogin = () => {
     </div>
 }
 
-export default PartnerLogin
+export default PartnerLogin;

@@ -1,0 +1,60 @@
+.alertbody {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.container {
+    text-align: center;
+}
+
+.main-text {
+    font-size: 3em;
+    font-weight: bold;
+    color: #ff0000; /* Red color for emphasis */
+}
+
+.sub-text {
+    font-size: 1.5em;
+    color: #333333; /* Dark gray color for subheading */
+}
+
+.sub-text1 {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #333333; /* Dark gray color for subheading */
+}
+
+.view-button {
+    margin-top: 20px;
+    padding: 10px 24px;
+    font-size: 1.2em;
+    background-color: #3498db;
+    color: #ffffff; /* White text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+  
+.view-button:hover {
+    background-color: #2980b9; /* Darker blue color on hover */
+    color: #ffffff; /* White text color on hover */
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    .main-text {
+        font-size: 2em;
+    }
+
+    .sub-text {
+        font-size: 1em;
+    }
+}
+  

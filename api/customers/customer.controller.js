@@ -1,5 +1,8 @@
 import { compareSync, genSaltSync, hashSync } from 'bcrypt';
-import { create, checkCustomerByMobile, checkCustomerByEmail, getCustomerByEmail, CustomerOrdersDashboard, getCustomerOrderDetails, getCustomerInventoryDashboard, getCustomerInventoryDetails, getSearchedLocations, getCustomerWarehouseDetails, placeOrderToWarehouse, getWarehouseNameAndPartnerId } from './customer.services.js';
+import { create, checkCustomerByMobile, checkCustomerByEmail, getCustomerByEmail, CustomerOrdersDashboard, getCustomerOrderDetails, getCustomerInventoryDashboard,
+    getCustomerInventoryDetails, getSearchedLocations, getCustomerWarehouseDetails, 
+    placeOrderToWarehouse, getWarehouseNameAndPartnerId, getCutomerWarehouseImages,
+     getCityData, getCustomerSensorData, getCustomerProfileDetails } from './customer.services.js';
 import Jwt from "jsonwebtoken";
 export const createUser = (req, res) => {
    const body = req.body;
@@ -90,7 +93,6 @@ export const loginCustomerMobileController = (req, res) => {
 
 export const loginCustomerEmailController = (req, res) => {
    const body = req.body;
-
    getCustomerByEmail(body, (err, results) => {
       if (err) {
          console.log(err);
@@ -98,29 +100,33 @@ export const loginCustomerEmailController = (req, res) => {
             message: "error in customer email login"
          })
       }
-      if (!results) {
-         return res.send({
+      if (!results.length) {
+         return res.status(403).send({
             message: "email isn't registered, please sign up"
          })
       }
-      console.log(results[0]);
       const result = compareSync(body.password, results[0].customer_password);
       if (result) {
          const user={
-            id: results[0].customer_id
+            id: results[0].customer_id,
+            role:'customer'
          }
+         // generation of cookie
          const token = Jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '2h' });
-         res.cookie('token', token, { httpOnly: true });
+         res.cookie('token', token, { httpOnly: true,withCredentials:true });
 
+      let customer={
+             customerId:results[0].customer_id,
+            customerName:results[0].customer_name
+         }
          return (
 
             res.send({
-               token,
-               data: results[0].customer_id
-            })
+               data:customer,   
+             })
          )
       }
-      return res.send({
+      return res.status(402).send({
          message: "incorrect email or password"
       })
    })
@@ -148,7 +154,7 @@ export const CustomerOrdersDashboardController = (req, res) => {
 }
 
 export const CustomerOrderDetailsController = (req, res) => {
-   const id = req.params.id;
+   const id = req.params.orderId;
    console.log(id);
    getCustomerOrderDetails(id, (err, results) => {
       if (err) {
@@ -169,7 +175,7 @@ export const CustomerOrderDetailsController = (req, res) => {
 }
 
 export const CustomerInventoryDashboardController = (req, res) => {
-   const id = req.params.id;
+   const id = req.params.orderId;
    getCustomerInventoryDashboard(id, (err, results) => {
       if (err) {
          console.log(err);
@@ -190,7 +196,7 @@ export const CustomerInventoryDashboardController = (req, res) => {
 
 
 export const CustomerInventoryHistoryController = (req, res) => {
-   const id = req.params.id;
+   const id = req.params.inventoryId;
    getCustomerInventoryDetails(id, (err, results) => {
       if (err) {
          console.log(err);
@@ -251,16 +257,39 @@ export const CustomerWarehouseDetailsController = (req, res) => {
             message: "no warehouse available with this Id"
          })
       }
-      return res.send({
-         data: results
-      });
+
+
+      getCutomerWarehouseImages(warehouseId,(err,result)=>{
+         if(err){
+            console.log(err);
+            return res.send({
+               message:"error in admin partner warehouse details"
+            });
+         }
+         if(!results){
+            return res.send({
+               message:"no warehouse images yet"
+            });
+         }
+
+         getCustomerSensorData(warehouseId,(err,sensorData)=>{
+            if(err){
+               console.log(err);
+               return res.send({message:"error in customer sensor data"})
+            }
+            return res.send({
+               data:{results,result,sensorData},
+            })
+         })
+      })
    })
 }
 
 export const CustomerWarehouseSelectionController = (req, res) => {
-   const body = req.body.formData;
-   console.log(body.productDetails);
+   const body = req.body;
+   console.log(req.body)
    const { id, warehouseId } = req.params;
+   console.log(body);
    let warehouseName, partnerId;
    getWarehouseNameAndPartnerId(warehouseId, (err, results) => {
       if (err) {
@@ -297,4 +326,71 @@ export const CustomerWarehouseSelectionController = (req, res) => {
 
    })
 
+}
+
+export const CustomerPlaceorderController = (req, res) => {
+   const body = req.body;
+   const { id, warehouseId } = req.params;
+   let warehouseName, partnerId;
+   getWarehouseNameAndPartnerId(warehouseId, (err, results) => {
+      if (err) {
+         console.log(err);
+         return res.send({
+            message: "error in getting partnerId and warehouseName"
+         })
+      }
+      if (!results) {
+         return res.send({
+            message: "no warehouse available with this Id"
+         })
+      }
+      warehouseName = results[0].warehouse_name;
+      partnerId = results[0].partner_id;
+
+      placeOrderToWarehouse(body, id, warehouseId, warehouseName, partnerId, (err, results) => {
+         console.log(body)
+         if (err) {
+            console.log(err);
+            return res.send({
+               message: "error in placing order"
+            })
+         }
+         if (!results) {
+            return res.send({
+               message: "no warehouse available with this Id"
+            })
+         }
+         return res.send({
+            data: results
+         });
+      });
+
+
+   })
+
+}
+export const CityDataController=(req,res)=>{
+   getCityData((err,results)=>{
+      if(err){
+         console.log(err);
+      }
+      return res.send({
+         data:results
+      })
+   })
+}
+
+
+export const CustomerProfileDetailsController=(req,res)=>{
+   const {id}=req.params;
+   console.log(req.params)
+   getCustomerProfileDetails(id,(err,results)=>{
+      if(err){
+         console.log(err,"error in customer profile");
+      }
+      return res.send({
+         data:results
+      })
+
+   })
 }

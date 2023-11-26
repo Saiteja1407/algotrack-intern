@@ -55,7 +55,7 @@ export const checkCustomerByEmail=(body,callBack)=>{
 //--------------   get customer details 
 export const getCustomerByEmail=(body,callBack)=>{
     pool.query(
-        `select customer_emailid,customer_password,customer_id from customer where customer_emailid=?`,
+        `select customer_emailid,customer_password,customer_id,customer_name from customer where customer_emailid=?`,
         [body.email],
         (err,results,fields)=>{
             if(err){
@@ -124,7 +124,7 @@ export const getCustomerInventoryDetails=(id,callBack)=>{
 
 
 export const getSearchedLocations=(body,callBack)=>{
-    const storageType='available_dry_capacity';
+    var storageType='available_dry_capacity';
     if(body.temperatureRange=='Frozen'){
         storageType='available_frozen_capacity'
     }
@@ -132,7 +132,7 @@ export const getSearchedLocations=(body,callBack)=>{
       storageType='available_chiller_capacity'
     }
     pool.query(
-        `select * from warehouse where city=? and warehouse_UOM=? and ?>=?`,
+        `select * from warehouse as w,partner as p where w.city=? and w.warehouse_UOM=? and w.${storageType}>=? and w.partner_id=p.partner_id and p.activity_status=1`,
         [body.city,
          body.uom,
          storageType,
@@ -163,7 +163,7 @@ export const getCustomerWarehouseDetails=(warehouseId,callBack)=>{
 
 export const placeOrderToWarehouse=(body,id,warehouseId,warehouseName,partnerId,callBack)=>{
    pool.query(
-    `insert into order_details values(null,default,now(),STR_TO_DATE(?,'%m/%d/%Y'),NULL,NULL,?,?,?,?,?,?,?,?,?,?,?)`,
+    `insert into order_details (order_status,order_placed_date,order_execution_startdate,admin_id,warehouse_id,warehouse_name,customer_id,product_details,product_type,temp_range,storage_type,product_UOM,product_units,product_storage_months,partner_id) values(default,now(),STR_TO_DATE(?,'%m/%d/%Y'),NULL,?,?,?,?,?,?,?,?,?,?,?)`,
     [ body.selectedDate,
       warehouseId,
       warehouseName,
@@ -198,3 +198,57 @@ export const getWarehouseNameAndPartnerId=(warehouseId,callBack)=>{
     }
    );
 }
+export const getCutomerWarehouseImages=(warehouseId,callBack)=>{
+    pool.query('select warehouse_images from warehouse_images where warehouse_id=?',[warehouseId],
+    (err,results,feilds)=>{
+        if(err){
+           return callBack(err);
+        }
+        return callBack(null,results);
+    });
+};
+
+export const getCityData=(callBack)=>{
+    pool.query(
+        `SELECT City, COUNT(*) AS CityCount
+        FROM warehouse
+        GROUP BY City;
+        `,
+        [],
+        (err,results)=>{
+            if(err){
+                return callBack(err);
+            }
+            return callBack(null,results);
+        }
+    )
+}
+
+export const getCustomerSensorData=(warehouseId,callBack)=>{
+    pool.query(
+        `SELECT sd.sensor_id, sd.temp_data,s.sensor_warehouse_location FROM sensor_data sd
+        JOIN sensors s ON sd.sensor_id = s.sensor_id
+        WHERE s.warehouse_id = ?`,
+     [warehouseId],
+     (err,results)=>{
+         if(err){
+             return callBack(err);
+         }
+         return callBack(null,results);
+     }
+    )
+ }
+
+ export const getCustomerProfileDetails=(customerId,callBack)=>{
+    pool.query(
+        `select * from customer where customer_id=?`,
+        [customerId],
+        (err,results)=>{
+            if(err){
+                return callBack(err);
+            }
+            //console.log(results);
+            return callBack(null,results);
+        }
+    )
+ }

@@ -44,17 +44,17 @@ export const processCards = [
       courseName: "Benguluru",
       course: "30 WareHouses",
     },
-    {
-    cover: "https://img.icons8.com/external-smashingstocks-detailed-outline-smashing-stocks/66/000000/external-Charminar-indian-smashingstocks-detailed-outline-smashing-stocks.png",
-    hoverCover: 'https://static.thenounproject.com/png/117601-200.png',
-    courseName: "Hyderabad",
-    course: "30 WareHouses",
-    },
-    {
-      cover: "https://img.icons8.com/external-smashingstocks-detailed-outline-smashing-stocks/66/000000/external-Charminar-indian-smashingstocks-detailed-outline-smashing-stocks.png",
-      hoverCover: "https://img.icons8.com/external-smashingstocks-detailed-outline-smashing-stocks/66/000000/external-Charminar-indian-smashingstocks-detailed-outline-smashing-stocks.png",
-      courseName: "Hyderabad",
-      course: "30 WareHouses",
-      },
+    // {
+    // cover: "https://img.icons8.com/external-smashingstocks-detailed-outline-smashing-stocks/66/000000/external-Charminar-indian-smashingstocks-detailed-outline-smashing-stocks.png",
+    // hoverCover: 'https://static.thenounproject.com/png/117601-200.png',
+    // courseName: "Hyderabad",
+    // course: "30 WareHouses",
+    // },
+    // {
+    //   cover: "https://img.icons8.com/external-smashingstocks-detailed-outline-smashing-stocks/66/000000/external-Charminar-indian-smashingstocks-detailed-outline-smashing-stocks.png",
+    //   hoverCover: "https://img.icons8.com/external-smashingstocks-detailed-outline-smashing-stocks/66/000000/external-Charminar-indian-smashingstocks-detailed-outline-smashing-stocks.png",
+    //   courseName: "Hyderabad",
+    //   course: "30 WareHouses",
+    //   },
    
   ]

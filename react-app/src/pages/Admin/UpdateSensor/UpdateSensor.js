@@ -45,27 +45,27 @@ function UpdateSensor(){
             <h2 className='update-sensor-heading mb-3'>Update Sensor</h2>
             <form className='needs validation' noValidate onSubmit={handleSubmit}>
                 <div className="form-floating was-validated mb-3">
-                    <input onChange={handleChange} name='warehouseID' type="text" className="form-control" id="floatingInput" placeholder="Warehouse ID" value={inputs.warehouseID} required/>
+                    <input onChange={handleChange} name='warehouseID' type="text" className="form-control" placeholder="Warehouse ID" value={inputs.warehouseID} required/>
                     <label for="floatingInput">Warehouse ID</label>
                     <div className='invalid-feedback'>Enter the Warehouse ID</div>
                 </div>
                 <div className="form-floating was-validated mb-3">
-                    <input onChange={handleChange} name='sensorDeviceID' type="text" className="form-control" id="floatingInput" placeholder="Sensor device ID" value={inputs.sensorDeviceID} required/>
+                    <input onChange={handleChange} name='sensorDeviceID' type="text" className="form-control" placeholder="Sensor device ID" value={inputs.sensorDeviceID} required/>
                     <label for="floatingInput">Sensor device ID</label>
                     <div className='invalid-feedback'>Enter the Sensor device ID</div>
                 </div>
                 <div className="form-floating was-validated mb-3">
-                    <input onChange={handleChange} name='sensorDeviceName' type="text" className="form-control" id="floatingInput" placeholder="Sensor device name" value={inputs.sensorDeviceName} required/>
+                    <input onChange={handleChange} name='sensorDeviceName' type="text" className="form-control" placeholder="Sensor device name" value={inputs.sensorDeviceName} required/>
                     <label for="floatingInput">Sensor device name</label>
                     <div className='invalid-feedback'>Enter the Sensor device name</div>
                 </div>
                 <div className="form-floating was-validated mb-3">
-                    <input onChange={handleChange} name='deviceUID' type="text" className="form-control" id="floatingInput" placeholder="Device UID" value={inputs.deviceUID} required/>
+                    <input onChange={handleChange} name='deviceUID' type="text" className="form-control" placeholder="Device UID" value={inputs.deviceUID} required/>
                     <label for="floatingInput">Device UID</label>
                     <div className='invalid-feedback'>Enter the Device UID</div>
                 </div>
                 <div className="form-floating was-validated mb-3">
-                    <select onChange={handleChange} name='deviceType' className="form-select" id="validationCustom04" value={inputs.deviceType} required>
+                    <select onChange={handleChange} name='deviceType' className="form-select" value={inputs.deviceType} required>
                         <option selected disabled value="">Select the Device Type</option>
                         {devicetypeoptions.map(dropDown)}
                     </select>
@@ -111,7 +111,7 @@ function UpdateSensor(){
 
                 <h2 className='addsensorheading mb-3'>SIM</h2>
                 <div className="form-floating was-validated mb-3">
-                    <input onChange={handleChange} name='simID' type="text" className="form-control" id="floatingInput" placeholder="Sim ID" value={inputs.simID} required/>
+                    <input onChange={handleChange} name='simID' type="text" className="form-control" placeholder="Sim ID" value={inputs.simID} required/>
                     <label for="floatingInput">Sim ID</label>
                     <div className='invalid-feedback'>Enter the Sim ID</div>
                 </div>
@@ -126,7 +126,7 @@ function UpdateSensor(){
                 </div>
 
                 <div className="form-floating was-validated mb-3">
-                    <input onChange={handleChange} name='phoneNumber' type="number" className="form-control" id="floatingInput" placeholder="XXXXXXXXXX" value={inputs.phoneNumber} required/>
+                    <input onChange={handleChange} name='phoneNumber' type="number" className="form-control" placeholder="XXXXXXXXXX" value={inputs.phoneNumber} required/>
                     <label for="floatingInput">Phone Number</label>
                     <div className='invalid-feedback'>Enter the Phone Number</div>
                 </div>

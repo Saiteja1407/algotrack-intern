@@ -3,23 +3,35 @@ import { Row,Col,Container } from "react-bootstrap";
 import './CustomerInventoryHistory.css';
 import Table from 'react-bootstrap/Table';
 import axios from "axios";
-import {useParams} from 'react-router-dom'
+import {useParams,useLocation, useNavigate} from 'react-router-dom'
 let CustomerInventoryHistory = () =>{
-   const [inventoryHistory,setInventoryHistory]=useState([]);
-   const {id}=useParams();
+  const [inventoryHistory,setInventoryHistory]=useState([]);
+  const {id,inventoryId}=useParams();
+  console.log(id);
+  console.log(inventoryId)
+  const location=useLocation();
+  const Navigate=useNavigate();
+  const {balanceInvUnits}=location.state;
+  const [ErrorState,setErrorState]=useState(0);
    useEffect(() => {
       const fetchOrderDetails = async () => {
         try {
-          const response = await axios.get(`${process.env.REACT_APP_API}/customer/inventory/history/${id}`);
+          const response = await axios.get(`${process.env.REACT_APP_API}/customer/${id}/inventory/history/${inventoryId}`,{withCredentials:true});
           setInventoryHistory(response.data.data);
           console.log(response.data.data)
         } catch (error) {
           console.error('Error fetching order details:', error);
+          if (error.request.status===401){
+            setErrorState(1)
+           }
         }
       };
   
       fetchOrderDetails();
-    }, [id]); 
+    }, [inventoryId]); 
+    if(ErrorState===1){
+      Navigate('/unauthorizedpage');
+    }
 
     return(
         <>
@@ -32,7 +44,7 @@ let CustomerInventoryHistory = () =>{
                  <div className="bg-body-secondary mt-3">
                  <Row className="mt-3">
                      <Col xs={12} md={6} > <h4>Inventory Id :{inventoryHistory.length > 0 && inventoryHistory[0].inventory_id}</h4></Col>    {/* from data base */}
-                     <Col xs={12} md={6} > <h4>No Of Units Remaining In The Inventory:{inventoryHistory.length > 0 && inventoryHistory[0].space_remaining_inventory} </h4></Col>  {/* from data base */}
+                     <Col xs={12} md={6} > <h4>No Of Units Remaining In The Inventory:{balanceInvUnits} </h4></Col>  {/* from data base */}
                  </Row>
                  <Row className="mt-4">
                  

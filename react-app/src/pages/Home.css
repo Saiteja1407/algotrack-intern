@@ -42,6 +42,8 @@
 .github-used-row{
   align-items: center;
 }
+
+
 /*----------awrapper------------*/
 /* .awrapper {
   background-image: url("");
@@ -74,5 +76,13 @@
   }
   .awrapper {
     height: 50vh;
+  }
+}
+@media screen and (max-width:480px) {
+  .warehouseimg{
+    width: 100%;
+  }
+  .textpart1 >.textpart11 {
+    font-size: 2rem;
   }
 }

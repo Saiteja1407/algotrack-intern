@@ -4,29 +4,36 @@ import {useNavigate,useParams} from 'react-router-dom'
 import axios from "axios";
 
 function PartnerOrderDetails(){
-   const {id}=useParams();
+   const {id,orderId}=useParams();
    const navigate=useNavigate();
    const [orderDetails,setOrderDetails]=useState([]);
-
+   const [ErrorState,setErrorState]=useState(0);
    
    useEffect(() => {
       const fetchOrderDetails = async () => {
         try {
-          const response = await axios.get(`${process.env.REACT_APP_API}/partner/order/details/${id}`);
+          const response = await axios.get(`${process.env.REACT_APP_API}/partner/${id}/order/details/${orderId}`,{withCredentials:true});
           setOrderDetails(response.data.data);
           console.log(response.data.data)
         } catch (error) {
           console.error('Error fetching order details:', error);
+          if (error.request.status===401){
+            setErrorState(1)
+           }
+          else{
+            alert("error occured")
+          }
         }
       };
   
       fetchOrderDetails();
-    }, [id]); 
-    
-    const handleClick=(id)=>{
-          navigate(`/partner/inventory/dashboard/${id}`)
+    }, [orderId]); 
+    const handleClick=()=>{
+          navigate(`/partner/${id}/inventory/dashboard/${orderId}`)
     }
-
+    if(ErrorState===1){
+      navigate('/unauthorizedpage');
+    }
 return(
       <div className='bg-light flex align-items-center justify-content-center'>
           <div className=' container partneroderdetailsnewcontainer'>
@@ -51,7 +58,7 @@ return(
                   <p>Warehouse Name:{orderDetails.length > 0 && orderDetails[0].warehouse_name}</p>
               </div>
               <div className='d-flex justify-content-center me-5'>
-                  <button className='btn btn-success mt-3' onClick={()=>handleClick(orderDetails[0].order_id)}>Manage Inventory</button>
+                  <button className='btn btn-success mt-3' onClick={()=>handleClick()}>Manage Inventory</button>
               </div>
           </div>    
       </div>

@@ -5,6 +5,7 @@
   border-radius: 0rem;
   width: 100%;
   padding: 0;
+  text-align: start;
 }
 
 .carousel {
@@ -13,6 +14,10 @@
   margin-right: auto;
   width: 90%;
   border-radius: 0%; /* Set the border-radius of the Carousel to 0% */
+}
+
+.pdf-view{
+  cursor: pointer;
 }
 
 

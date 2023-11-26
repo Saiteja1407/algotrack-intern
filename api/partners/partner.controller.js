@@ -1,8 +1,7 @@
-import { genSaltSync, hashSync,compareSync } from "bcrypt";
+import { genSaltSync, hashSync,compareSync, genSalt } from "bcrypt";
 import { getPartnerById,PartnerOrdersDashboard,
-getPartnerOrderDetails,getPartnerInventoryDashboard,getPartnerInventoryDetails,getPartnerInventoryHistoryDetails, createInventoryHistory } from "./partner.services.js";
-
-
+getPartnerOrderDetails,getPartnerInventoryDashboard,getPartnerInventoryDetails,getPartnerInventoryHistoryDetails, createInventoryHistory, getPartnerWarehouses, getPartnerWarehouseDetails, createInventory, updateAgeing, updateSpaceRemainingForOrder, updateUnitsAfterDispatch, updateBalanceInventoryUnits, getOrderIdUsingInventoryId, getPartnerWarehouseImages, getSensorData, updateWarehouseSpace, getPartnerProfileDetails } from "./partner.services.js";
+import  Jwt  from "jsonwebtoken";
 export const partnerLoginController=(req,res)=>{
     const body=req.body;
     
@@ -13,21 +12,29 @@ export const partnerLoginController=(req,res)=>{
                message:"error in parnter login"
             })
          }
-         if(!results){
-            return res.send({
+         if(!results.length){
+            return res.status(403).send({
                message:"you are not registered as partner, please sign up if you are a customer"
             })
          }
-         console.log(results[0].spoc_password);
-         
+        console.log(results[0].spoc_password);
+      
         const result=compareSync(body.password,results[0].spoc_password);
-        
+
         if(result){
+         console.log(result);
+         const user={
+            id:results[0].partner_id,
+            role:'partner',
+         }
+         const token = Jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '2h' });
+         console.log(token)
+         res.cookie('token', token, { httpOnly: true,withCredentials:true });
          return res.send({message:"partner login is successful",
                        data:results[0].partner_id
        });
         }
-        return res.send({
+        return res.status(402).send({
          message:"incorrect partnerId or password"
         })
     })
@@ -56,7 +63,7 @@ export const partnerMainscreenController=(req,res)=>{
 }
 
 export const partnerOrderDetailsController=(req,res)=>{
-   const id=req.params.id;
+   const id=req.params.orderId;
    console.log(id);
    getPartnerOrderDetails(id,(err,results)=>{
      if(err){
@@ -78,7 +85,7 @@ export const partnerOrderDetailsController=(req,res)=>{
 
 
 export const partnerInventoryDashboardController=(req,res)=>{
-   const id=req.params.id;
+   const id=req.params.orderId;
    getPartnerInventoryDashboard(id,(err,results)=>{
       if(err){
          console.log(err);
@@ -98,7 +105,7 @@ export const partnerInventoryDashboardController=(req,res)=>{
 }
 
 export const partnerInventoryHistoryController=(req,res)=>{
-   const id=req.params.id;
+   const id=req.params.inventoryId;
    getPartnerInventoryHistoryDetails(id,(err,results)=>{
       if(err){
          console.log(err);
@@ -118,8 +125,7 @@ export const partnerInventoryHistoryController=(req,res)=>{
 }
 
 export const partnerInventoryDetailsController=(req,res)=>{
-   const id=req.params.id;
-   console.log(id)
+   const id=req.params.inventoryId;
    getPartnerInventoryDetails(id,(err,results)=>{
       if(err){
          console.log(err);
@@ -138,11 +144,13 @@ export const partnerInventoryDetailsController=(req,res)=>{
    })
 }
 
-
+setInterval(() => {
+   updateAgeing();
+}, 86400000);
 
 export const partnerInventoryHistoryCreationController=(req,res)=>{
    const body=req.body;
-   const inventoryId=req.params.id;
+   const inventoryId=req.params.inventoryId;
    createInventoryHistory(inventoryId,body,(err,results)=>{
       if(err){
          console.log(err);
@@ -150,6 +158,46 @@ export const partnerInventoryHistoryCreationController=(req,res)=>{
              message:"error in inventory history creation",
          });
        }
+       let orderId=null;
+       getOrderIdUsingInventoryId(inventoryId,(err,result)=>{
+         if(err){
+            console.log(err);
+         }
+         else{
+          updateUnitsAfterDispatch((err,results)=>{
+            if(err){
+               console.log(err)
+            }
+            else{
+               //console.log(results);
+               orderId=result[0].order_id;
+               console.log(orderId);
+               updateBalanceInventoryUnits((err,resultss)=>{
+                  if(err){
+                     console.log(err);
+                  }
+                  else{
+                     //console.log(resultss);
+                     updateSpaceRemainingForOrder(orderId,(err,results)=>{
+                        if(err){
+                           console.log(err);
+                         }
+                         else{
+                           console.log(results);
+                         }
+                      })
+                  }
+               });
+            }
+          });
+           
+         }
+       })
+      
+       
+       //updateSpaceForRemainingOrder(orderId);
+       
+
        return res.send({
           data:results,
           message:"inventory history created successfully"
@@ -157,4 +205,111 @@ export const partnerInventoryHistoryCreationController=(req,res)=>{
    })
    
 
+}
+
+export const partnerWarehousesController=(req,res)=>{
+   const {id}=req.params;
+   getPartnerWarehouses(id,(err,results)=>{
+      if(err){
+         console.log(err);
+         return res.send({
+             message:"error in partner warehouses",
+         });
+       }
+       return res.send({
+          data:results,
+          message:"partner warehouses fetched successfully"
+       });
+
+   })
+}
+
+export const PartnerWarehouseDetailsController=(req,res)=>{
+   const {id,warehouseId}=req.params;
+   getPartnerWarehouseDetails(warehouseId,(err,results)=>{
+      if(err){
+         console.log(err);
+         return res.send({
+             message:"error in partner warehouse details",
+         });
+       }
+
+       getPartnerWarehouseImages(warehouseId,(err,result)=>{
+         if(err){
+            console.log(err);
+            return res.send({
+               message:"error in admin partner warehouse details"
+            });
+         }
+         if(!results){
+            return res.send({
+               message:"no warehouse images yet"
+            });
+         }
+
+         getSensorData(warehouseId,(err,sensorData)=>{
+            if(err){
+               console.log(err);
+               return res.send({message:"error in partner sensor data"})
+            }
+            return res.send({
+               data:{results,result,sensorData},
+            })
+         })
+        
+      })
+   })
+}
+
+export const partnerInventoryCreationController=(req,res)=>{
+   const body=req.body;
+   console.log(body);
+   createInventory(body,(err,results)=>{
+      if(err){
+         console.log(err);
+         return res.send({
+             message:"error in inventory creation",
+         });
+       }
+       updateSpaceRemainingForOrder(body.orderId,(err,result)=>{
+         if(err){
+            console.log(err);
+          }
+          else{
+            console.log(result);
+          }
+       })
+       return res.send({
+          data:results,
+          message:"inventory  created successfully"
+       });
+   })
+}
+export const updateSpaceWarehouse=(req,res)=>{
+   const warehouseId=req.params.warehouseId;
+   const body=req.body;
+   updateWarehouseSpace(body,warehouseId,(err,result)=>{
+      if(err){
+         console.log(err);
+         return res.send({
+             message:"error in space updation",
+         });
+       }
+       return res.send({
+          data:result,
+          message:"partner warehouses space has been updated successfully"
+       });
+   })
+}
+export const PartnerProfileDetailsController=(req,res)=>{
+   const {id}=req.params;
+   getPartnerProfileDetails(id,(err,results)=>{
+      if(err){
+         console.log(err,"error in customer profile");
+      }
+      return res.send({
+         data:results
+      })
+
+   })
 }

@@ -6,20 +6,25 @@ import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import { registeredcustomers } from "../../Customer/CustomerMainScreen/orderdummydata";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 let AdminCustomerVerification = () =>{
   const [data,setData]=useState([]);
   const {id}=useParams();
+  const Navigate=useNavigate();
+  const [ErrorState,setErrorState]=useState(0);
   const [isChecked, setIsChecked] = useState(false);
   
   const fetchData = async () => {
     try {
-        const response = await axios.get(`${process.env.REACT_APP_API}/admin/${id}/customer/verification`);
+        const response = await axios.get(`${process.env.REACT_APP_API}/admin/${id}/customer/verification`,{withCredentials:true});
         setData(response.data.data);
         console.log(response.data.data)
     } catch (error) {
         console.log(error);
+        if (error.request.status===401){
+          setErrorState(1)
+         }
     }
 };
 
@@ -33,7 +38,7 @@ let AdminCustomerVerification = () =>{
         }
         const postData = async () => {
           try {
-            const response = await axios.post(`${process.env.REACT_APP_API}/admin/${id}/customer/verification`, data);
+            const response = await axios.post(`${process.env.REACT_APP_API}/admin/${id}/customer/verification`, data,{withCredentials:true});
             fetchData();
             return response.data
           } catch (error) {
@@ -49,7 +54,7 @@ let AdminCustomerVerification = () =>{
         }
         const postData = async () => {
           try {
-            const response = await axios.post(`${process.env.REACT_APP_API}/admin/${id}/customer/verification`, data);
+            const response = await axios.post(`${process.env.REACT_APP_API}/admin/${id}/customer/verification`, data,{withCredentials:true});
             fetchData();
             return response.data
           } catch (error) {
@@ -61,6 +66,10 @@ let AdminCustomerVerification = () =>{
       useEffect(() => {
         fetchData();
     }, [id]);
+
+    if(ErrorState===1){
+      Navigate('/unauthorizedpage');
+    }
 
     return(
         <>

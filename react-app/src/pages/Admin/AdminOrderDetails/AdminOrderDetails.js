@@ -1,12 +1,14 @@
 import React,{useState,useEffect} from "react";
 import "./AdminOrderDetails.css";
-import {Link,useParams} from 'react-router-dom'
+import {Link,useNavigate,useParams} from 'react-router-dom'
 import axios from "axios";
 
 
 
 function AdminOrderDetails(){
   const {id,orderId}=useParams();
+  const Navigate=useNavigate();
+  const [ErrorState,setErrorState]=useState(0);
    const [orderDetails,setOrderDetails]=useState([]);
    const [orderStatus, setOrderStatus] = useState("");
 
@@ -14,12 +16,15 @@ function AdminOrderDetails(){
    useEffect(() => {
       const fetchOrderDetails = async () => {
         try {
-          const response = await axios.get(`${process.env.REACT_APP_API}/admin/${id}/order/details/${orderId}`);
+          const response = await axios.get(`${process.env.REACT_APP_API}/admin/${id}/order/details/${orderId}`,{withCredentials:true});
           setOrderDetails(response.data.data);
           setOrderStatus(response.data.data[0].order_status);
           console.log(response.data.data)
         } catch (error) {
           console.error('Error fetching order details:', error);
+          if (error.request.status===401){
+            setErrorState(1)
+           }
         }
       };
   
@@ -32,7 +37,7 @@ function AdminOrderDetails(){
         console.log(id,orderId);
         const response = await axios.patch(`${process.env.REACT_APP_API}/update/order/status/${id}/${orderId}`, {
           status: selectedStatus,
-        });
+        },{withCredentials:true});
         
       setOrderStatus(selectedStatus);
 
@@ -42,7 +47,9 @@ function AdminOrderDetails(){
         console.error('Error updating status:', error);
       }
     };
-    
+    if(ErrorState===1){
+      Navigate('/unauthorizedpage');
+     }
 
 
     return(
@@ -69,10 +76,10 @@ function AdminOrderDetails(){
                   <p>Warehouse Name:{orderDetails.length > 0 && orderDetails[0].warehouse_name}</p>
               </div>
               <div className='d-flex justify-content-center btn-group col-4 mx-auto'>
-                  <button className='btn btn-success dropdown-toggle mt-3' data-bs-toggle="dropdown">update Inventory </button>
+                  <button className='btn btn-success dropdown-toggle mt-3' data-bs-toggle="dropdown">Update Order Status</button>
                   <ul class="dropdown-menu">
-                    <li><Link class="dropdown-item" onClick={()=>handleStatusUpdate('confirmed')}>Pending</Link></li>
-                    <li><Link class="dropdown-item" onClick={()=>handleStatusUpdate('pending')}>Confirmed</Link></li>
+                    <li><Link class="dropdown-item" onClick={()=>handleStatusUpdate('pending')}>Pending</Link></li>
+                    <li><Link class="dropdown-item" onClick={()=>handleStatusUpdate('confirmed')}>Confirmed</Link></li>
                     <li><Link class="dropdown-item" onClick={()=>handleStatusUpdate('cancelled')}>Cancelled</Link></li>
                   </ul>
               </div>

@@ -1,37 +1,61 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import './PartnerWarehouses.css';
-import { useParams,useNavigate,useLocation } from 'react-router-dom';
-import Carousel from 'react-bootstrap/Carousel';
+import { useParams,useNavigate} from 'react-router-dom';
 import SearchBar from '../../../components/SearchBar';
+import axios from 'axios';
 
 const PartnerWarehouses = () => {
       const {id}=useParams();
        const navigate=useNavigate();
-       const location=useLocation();
-       const {formData,responseData}=location.state;
-      console.log(formData,responseData);
+       const [warehouseDetails,setWarehouseDetails]=useState([]);
+       const [ErrorState,setErrorState]=useState(0);
+       
+       
 
-  const WarehousesData = [
-    {
-      images: [
-        'https://www.shutterstock.com/shutterstock/photos/1929800966/display_1500/stock-photo-interior-of-a-modern-warehouse-storage-of-retail-shop-with-pallet-truck-near-shelves-1929800966.jpg',
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNsAVdYMq7cyBor4lgiY8m6PE5SrlJHdBR4g&usqp=CAU',
-        'https://thumbs.dreamstime.com/b/warehouse-industrial-logistics-companies-commercial-huge-distribution-high-shelves-bottom-view-191288522.jpg'],
-      warehouseName: 'uncle warehouse',
-      warehouseLocation: 'Delhi',
-      warehouseId: '211210054',
-    },
+       useEffect(()=>{
+        const fetchWarehouseDetails=async()=>{
+        try{
+            const response= await axios.get(`${process.env.REACT_APP_API}/partner/${id}/warehouses`,{withCredentials:true});
+          setWarehouseDetails(response.data.data);
+          console.log(response.data.data);
+        }
+        catch(error){
+          if (error.request.status===401){
+            setErrorState(1)
+           }
+          else{
+            alert("error occured")
+          }
+        }
+ 
+        }
+          fetchWarehouseDetails();
+       },[id])
+
+  // const WarehousesData = [
+  //   {
+  //     images: [
+  //       'https://www.shutterstock.com/shutterstock/photos/1929800966/display_1500/stock-photo-interior-of-a-modern-warehouse-storage-of-retail-shop-with-pallet-truck-near-shelves-1929800966.jpg',
+  //       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNsAVdYMq7cyBor4lgiY8m6PE5SrlJHdBR4g&usqp=CAU',
+  //       'https://thumbs.dreamstime.com/b/warehouse-industrial-logistics-companies-commercial-huge-distribution-high-shelves-bottom-view-191288522.jpg'],
+  //     warehouseName: 'uncle warehouse',
+  //     warehouseLocation: 'Delhi',
+  //     warehouseId: '211210054',
+  //   },
     
-    // Add more data objects as needed
-  ]
+  //   // Add more data objects as needed
+  // ]
 
   function moreDetails(warehouseId)
   {
-    navigate(`/customer/${id}/${warehouseId}`,{state:{formData:formData}});
+    navigate(`/partner/${id}/${warehouseId}`);
   }
-  
+  if(ErrorState===1){
+    alert("please login to continue");
+    navigate('/login/partner');
+  }
   return (
     <>
     <div className="searchingwarehouse">
@@ -39,12 +63,12 @@ const PartnerWarehouses = () => {
       </div>  
       <div className="container mb-4 mt-4 ">
         <div className="row g-2 " >
-          {WarehousesData.map((item, index) => {
+          {warehouseDetails.map((item) => {
             return (
-              <div className="col-sm-12 col-lg-6" key={index}>
+              <div className="col-sm-12 col-lg-6" >
                 <Card style={{ width: '25rem', borderRadius:'2rem' }} className="card shadow">
                   <div className="carousel-container">
-                    <Carousel controls={true} interval={100}>
+                    {/* <Carousel controls={true} interval={100}>
                       {item.images.map((image, imgIndex) => (
                         <Carousel.Item key={imgIndex}>
                           <div className="image-container">
@@ -56,12 +80,12 @@ const PartnerWarehouses = () => {
                           </div>
                         </Carousel.Item>
                       ))}
-                    </Carousel>
+                    </Carousel> */}
                   </div>
                   <Card.Body>
-                    <Card.Text>Warehouse Id: {item.warehouseId}</Card.Text>
-                    <Card.Text>Warehouse Name: {item.warehouseName}</Card.Text>
-                    <Card.Text>Warehouse Location: {item.warehouseLocation}</Card.Text>
+                    <Card.Text>Warehouse Id: {item.warehouse_id}</Card.Text>
+                    <Card.Text>Warehouse Name: {item.warehouse_name}</Card.Text>
+                    <Card.Text>Warehouse Location: {item.street}, {item.city}</Card.Text>
                     <div className="m-1">
                       <Button onClick={()=>{moreDetails(item.warehouse_id)}} variant="secondary">More details</Button>
                     </div>

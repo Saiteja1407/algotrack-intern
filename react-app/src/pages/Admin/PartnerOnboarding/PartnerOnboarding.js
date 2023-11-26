@@ -29,7 +29,7 @@ const PartnerOnboarding = () => {
 
         
             try {
-              const response = await axios.post(`${process.env.REACT_APP_API}/admin/${id}/partneronboarding`, inputs);
+              const response = await axios.post(`${process.env.REACT_APP_API}/admin/${id}/partneronboarding`, inputs,{withCredentials:true});
               console.log(response.data.data)
               navigate(`/admin/${id}/facilityonboarding/${response.data.data}`);
               return response.data
@@ -97,7 +97,7 @@ const PartnerOnboarding = () => {
                     <div className='invalid-feedback'>Enter the Partner ID</div>
                 </div>
                 <div className="form-floating was-validated mb-3">
-                    <input onChange={handleChange} name='password' type="password" className="form-control" id="floatingPassword" placeholder="Password" value={inputs.password} required/>
+                    <input onChange={handleChange} name='password' type="password" className="form-control" placeholder="Password" value={inputs.password} required/>
                     <label for="floatingPassword">Password</label>
                     <div className='invalid-feedback'>Enter the Password</div>
                 </div>

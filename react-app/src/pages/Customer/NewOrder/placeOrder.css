@@ -1,0 +1,16 @@
+.placeoderdetailsnewcontainer{
+    margin-left: 10%;
+    width:80%;
+    background-color: aliceblue;
+    padding:5%;
+    padding-top: 3%;
+    border-radius: 20px;
+    height: max-content;
+    overflow: auto;
+}
+.placeborder{
+    border-style: solid;
+    border-radius: 10px;
+    border-width: 400;
+    border-color: black!important;
+}

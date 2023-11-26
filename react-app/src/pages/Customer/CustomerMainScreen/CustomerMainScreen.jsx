@@ -1,17 +1,18 @@
 import React,{useState,useEffect} from "react";
 import { Row,Col,Container } from "react-bootstrap";
-import {useNavigate, useParams} from 'react-router-dom';
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import './CustomerMainScreen.css';
 import Table from 'react-bootstrap/Table';
 import axios from "axios";
 import SearchBar from "../../../components/SearchBar";
-import SearchedLocations from "../NewOrder/SearchedLocations";
+
 
 
 
 let CustomerMainScreen = () =>{
   const [errState, setErrState] = useState(0);
+  
 
   // searchbar
   const [orders, setOrders] = useState([]);             // Holds all orders
@@ -19,15 +20,16 @@ let CustomerMainScreen = () =>{
   const [searchQuery, setSearchQuery] = useState('');      // Holds the search query
 
 
-  const [data,setData]= useState([]);
+  
   const navigate = useNavigate();
   const {id}=useParams();
+  const [ErrorState,setErrorState]=useState(0)
   
   
- const handleClick=(id)=>{
+ const handleClick=(orderId)=>{
     
     try {
-      navigate(`/customer/order/details/${id}`);
+      navigate(`/customer/${id}/order/details/${orderId}`);
     } catch (error) {
       console.error('Error fetching order details:', error);
     }
@@ -38,14 +40,15 @@ let CustomerMainScreen = () =>{
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API}/customer/mainscreen/${id}`);
-            setData(response.data.data);
+            const response = await axios.get(`${process.env.REACT_APP_API}/customer/mainscreen/${id}`,{withCredentials:true});
             setOrders(response.data.data);
           setFilteredOrders(response.data.data);
         } catch (error) {
             console.log(error.response.data);
             setErrState(1);
-            console.log(errState);
+            if (error.request.status===401){
+              setErrorState(1)
+             }
         }
     };
 
@@ -70,6 +73,9 @@ let CustomerMainScreen = () =>{
       );
       setFilteredOrders(filteredOrders);
     };
+    if(ErrorState===1){
+      navigate('/unauthorizedpage');
+    }
 
 
     if(errState===0){
@@ -79,7 +85,7 @@ let CustomerMainScreen = () =>{
             <Row className="mt-3 mb-3">
              
               <Col xs={12} md={3} className="ms-auto">
-                <Button onClick={placeNewOrder} variant="warning" size="lg" className="placeaneworderbutton m-3 shadow-lg">Place a New Order</Button>
+                <Button onClick={placeNewOrder} variant="warning" size="lg" className="placeaneworderbutton m-3 shadow-lg">Place Order</Button>
               </Col>
             </Row>
 
@@ -95,7 +101,7 @@ let CustomerMainScreen = () =>{
                </Row></>:null}
                 
                <Row className="mt-4">
-               {(orders.length>0)?<Table striped="columns" bordered hover size="lg" variant="Secondary" className="shadow-lg" responsive>
+               {(orders.length>0)?<Table  bordered hover size="lg" variant="Secondary" className="shadow-lg" responsive>
     
     <thead size="lg" className="h5" >
       <tr>

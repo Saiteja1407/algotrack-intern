@@ -26,6 +26,17 @@
     padding: 10px;
   }
   
+
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    background-color: black; /* Change this to your desired color */
+  }
+  
+  .carousel-control-prev,
+  .carousel-control-next {
+    background-color: transparent; /* Change this to set the background color of the arrow container */
+    border-color: transparent; /* Change this to set the border color of the arrow container */
+  }
   /* p {
     justify-content: center;
     margin-top: 10%;

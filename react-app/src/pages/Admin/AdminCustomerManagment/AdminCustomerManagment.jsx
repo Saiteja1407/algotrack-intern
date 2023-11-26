@@ -4,19 +4,23 @@ import Button from "react-bootstrap/Button";
 import './AdminCustomerManagment.css';
 import Table from 'react-bootstrap/Table';
 import axios from "axios";
-import {useParams} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 
 let AdminCustomerManagment = () =>{
   const {id}=useParams();
+  const Navigate=useNavigate();
   const [CustomersData,setCustomersData]=useState([])
-
+  const [ErrorState,setErrorState]=useState(0);
   const fetchCustomerDetails = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API}/admin/${id}/customer/management`);
+      const response = await axios.get(`${process.env.REACT_APP_API}/admin/${id}/customer/management`,{withCredentials:true});
       setCustomersData(response.data.data);
       console.log(response.data.data)
     } catch (error) {
       console.error(error);
+      if (error.request.status===401){
+        setErrorState(1)
+      }
     }
   };
 
@@ -33,6 +37,9 @@ let AdminCustomerManagment = () =>{
       console.log("Customer deleted successfully:", response.data);
      }
 
+     if(ErrorState===1){
+        Navigate('/unauthorizedpage');
+     }
     
 
     return(

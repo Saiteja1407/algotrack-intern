@@ -201,6 +201,9 @@ function AdminNavbar(){
           <li>
           <Link to={`/admin/${id}/partner/management`} className="link">Manage Partners</Link>
           </li>
+          <li>
+          <Link to={`/logout`} className="link">Logout</Link>
+          </li>
         </ul>
       </div>
       <div className={showSidebar?"adminrender":"adminrender active"}>

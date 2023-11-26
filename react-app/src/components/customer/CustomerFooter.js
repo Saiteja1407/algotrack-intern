@@ -1,15 +1,16 @@
 import React from 'react'
 import '../../App.css';
-import { Link} from 'react-router-dom';
+import { Link, useParams} from 'react-router-dom';
 
 const CustomerFooter = () => {
     const year=new Date()
+    const {id}=useParams();
   return (
     <><footer>
     <div className='footer-second'>
         <div className="subfooter">
           <h4 className="headingtype"> Company</h4>
-          <Link className='custom-link' to='/customer/mainscreen'>Main Screen</Link>
+          <Link className='custom-link' to={`/customer/mainscreen/${id}`}>Main Screen</Link>
           <Link className='custom-link' to='/about'>About Us</Link>
           <Link className='custom-link' to='/contact'>Contact Us</Link>
         </div>

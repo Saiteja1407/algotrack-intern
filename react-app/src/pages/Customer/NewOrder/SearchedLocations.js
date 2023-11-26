@@ -6,6 +6,7 @@ import {  useLocation, useNavigate, useParams } from 'react-router-dom';
 import Carousel from 'react-bootstrap/Carousel';
 import SearchBar from '../../../components/SearchBar';
 
+
 const SearchedLocations = () => {
       const {id}=useParams();
        const navigate=useNavigate();
@@ -14,36 +15,16 @@ const SearchedLocations = () => {
       console.log(formData,responseData);
       
       
-      // const arr=responseData.map((item,warehouse_id)=>{
-      //     if(formData.temperatureRange==='Dry'){
-      //       return item.warehouse_price_dry;
-      //     }
-      //     else if(formData.temperatureRange==='Frozen'){
-      //       return item.warehouse_price_frozen;
-      //     }
-      //     else{
-      //       return item.warehouse_price_chiller;
-      //     }
-      // })
-      // console.log(arr);
+     
 
-  const WarehousesData = [
-    {
-      images: [
-        'https://www.shutterstock.com/shutterstock/photos/1929800966/display_1500/stock-photo-interior-of-a-modern-warehouse-storage-of-retail-shop-with-pallet-truck-near-shelves-1929800966.jpg',
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNsAVdYMq7cyBor4lgiY8m6PE5SrlJHdBR4g&usqp=CAU',
-        'https://thumbs.dreamstime.com/b/warehouse-industrial-logistics-companies-commercial-huge-distribution-high-shelves-bottom-view-191288522.jpg'],
-      warehouseName: 'uncle warehouse',
-      warehouseLocation: 'Delhi',
-      warehousePrice: 'dho sav',
-    },
-    
-    // Add more data objects as needed
-  ]
+  
 
   function moreDetails(warehouseId)
   {
     navigate(`/customer/${id}/${warehouseId}`,{state:{formData:formData}});
+  }
+  function handleClick(warehouseId,warehousePrice){
+    navigate(`/customer/${id}/${warehouseId}/placeOrder`,{state:{formData:formData,warehousePrice:warehousePrice}})
   }
   
   const price=(item)=>{
@@ -57,7 +38,11 @@ const SearchedLocations = () => {
         return item.warehouse_price_chiller;
        }
   }
-
+  if (!responseData){
+    return(
+      <h1 style={{width:"100vh",height:"60vh",textAlign:"center"}}>you dont have any warehouses matching your requirement</h1>
+    )
+  }
   return (
     <>
     <div className="searchingwarehouse">
@@ -92,7 +77,7 @@ const SearchedLocations = () => {
                       <Button onClick={()=>{moreDetails(item.warehouse_id)}} variant="secondary">More details</Button>
                     </div>
                     <div className="m-1">
-                      <Button variant="secondary">Place order</Button>
+                      <Button variant="secondary" onClick={()=>{handleClick(item.warehouse_id,price(item))}}>Place order</Button>
                     </div>
                   </Card.Body>
                 </Card>

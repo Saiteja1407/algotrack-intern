@@ -3,25 +3,44 @@ import { Row,Col,Container } from "react-bootstrap";
 import './PartnerInventoryHistory.css';
 import Table from 'react-bootstrap/Table';
 import axios from "axios";
-import {useParams} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 
 let PartnerInventoryHistory = () =>{
   const [inventoryHistory,setInventoryHistory]=useState([]);
-  const {id}=useParams();
+  const {id,inventoryId}=useParams();
+  const [ErrorState,setErrorState]=useState(0);
+  const [unitsafter, setUnitsAfter] = useState(0);
+  const Navigate=useNavigate();
   useEffect(() => {
      const fetchOrderDetails = async () => {
        try {
-         const response = await axios.get(`${process.env.REACT_APP_API}/partner/inventory/history/${id}`);
+         const response = await axios.get(`${process.env.REACT_APP_API}/partner/${id}/inventory/history/${inventoryId}`,{withCredentials:true});
          setInventoryHistory(response.data.data);
          console.log(response.data.data)
        } catch (error) {
          console.error('Error fetching order details:', error);
+         if (error.request.status===401){
+          setErrorState(1)
+         }
+        else{
+          alert("error occured")
+        }
        }
      };
  
      fetchOrderDetails();
-   }, [id]); 
-
+   }, [id,inventoryId]); 
+   
+   useEffect(()=>{
+     const unitsafterdispatch=async()=>{
+      inventoryHistory && setUnitsAfter(inventoryHistory[inventoryHistory.length-1]?.units_after_dispatch);
+   }
+     unitsafterdispatch();
+   },[inventoryHistory])
+   
+   if(ErrorState===1){
+    Navigate('/unauthorizedpage');
+  }
     return(
         <>
           <Container className="mb-3">
@@ -32,7 +51,7 @@ let PartnerInventoryHistory = () =>{
                  </Row>
                  <Row className="mt-3">
                      <Col xs={12} md={6} > <h4>Inventory Id :{inventoryHistory.length > 0 && inventoryHistory[0].inventory_id} </h4></Col>  {/* from data base */}
-                     <Col xs={12} md={6} > <h4>No Of Units Remaining In The Inventory: {inventoryHistory.length > 0 && inventoryHistory[0].space_remaining_inventory} </h4></Col> {/* from data base */}
+                     <Col xs={12} md={6} > <h4>No Of Units Remaining In The Inventory: {inventoryHistory&& unitsafter} </h4></Col> {/* from data base */}
                  </Row>
                  <Row className="mt-4">
                  
@@ -40,16 +59,15 @@ let PartnerInventoryHistory = () =>{
       
                     <thead size="lg" className="fs-4" >
                       <tr>
-                        <th>Inventoruy History Id</th>
+                        <th>Inventory History Id</th>
                          <th >Units Before Dispatch</th>
                          <th >Units Dispatched</th>
                          <th >Units After Dispatch</th>
-                         <th > Dispatch Date & Time</th>
-                         
+                         <th >Dispatch Date & Time</th>
                        </tr>
                     </thead>
                      <tbody className="center" size="lg">
-                        { inventoryHistory.map((val) =>(
+                        { inventoryHistory&& inventoryHistory.map((val) =>(
                            <tr>
                             <>
                             <td>{val.inventory_history_id}</td>
@@ -62,11 +80,9 @@ let PartnerInventoryHistory = () =>{
                             </tr> 
                       ))}    
                      </tbody>
-                   </Table>
-                   
+                   </Table> 
                  </Row>
               </Row>
-
           </Container>   
 
         </>

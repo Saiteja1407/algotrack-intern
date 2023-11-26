@@ -9,15 +9,19 @@ import axios from "axios";
 let AdminOrdersDashboard = () =>{
    const [OrderData,setOrderData]=useState([])
     const Navigate=useNavigate();
+    const [ErrorState,setErrorState]=useState(0);
     const {id}=useParams();
     useEffect(() => {
       const fetchOrderDetails = async () => {
         try {
-          const response = await axios.get(`${process.env.REACT_APP_API}/admin/${id}/orders/dashboard`);
+          const response = await axios.get(`${process.env.REACT_APP_API}/admin/${id}/orders/dashboard`,{withCredentials:true});
           setOrderData(response.data.data);
           console.log(response.data.data)
         } catch (error) {
           console.error(error);
+          if (error.request.status===401){
+            setErrorState(1)
+           }
         }
       };
 
@@ -26,6 +30,9 @@ let AdminOrdersDashboard = () =>{
        
        function handleClick(orderId){
            Navigate(`/admin/${id}/order/details/${orderId}`);
+       }
+       if(ErrorState===1){
+        Navigate('/unauthorizedpage');
        }
       
      

@@ -1,8 +1,19 @@
 .mainscreen-city-card:hover{
     transform: scale(1.05); /* Increase size on hover */
-  background-color: silver;
+  background-color: rgb(53,53,53);
 }
 
 .mainscreen-city-card{
     background-color: white;
+}
+.mainscreen1{
+  background-color: rgb(153, 153, 153);
+}
+.mainscreen1-img{
+  width: 70%;
+  height:auto;
+}
+
+.cityCard-title{
+  margin-left: 1.5rem;
 }

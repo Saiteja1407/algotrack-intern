@@ -29,12 +29,12 @@ function EmailForm(){
     
     return <form className='needs-validation'onSubmit={handleSubmit}>
         <div className="form-floating was-validated mb-3">
-            <input onChange={handleChange} type="email" name='email' className="form-control" id="floatingInput" placeholder="abc@example.com" value={inputs.email} required/>
+            <input onChange={handleChange} type="email" name='email' className="form-control" placeholder="abc@example.com" value={inputs.email} required/>
             <label for="floatingInput">Email</label>
             <div className='invalid-feedback'>Enter your Email</div>
         </div>
         {isClicked ? <div><div className="form-floating was-validated mb-3">
-                                <input onChange={handleChange} type="number" name='otp' className="form-control" id="floatingInput" placeholder="OTP" value={inputs.otp} required/>
+                                <input onChange={handleChange} type="number" name='otp' className="form-control" placeholder="OTP" value={inputs.otp} required/>
                                 <label for="floatingInput">OTP</label>
                                 <div className='invalid-feedback'>Enter the OTP</div>
                     </div></div>  : null}

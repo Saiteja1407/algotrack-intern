@@ -3,47 +3,48 @@ import { Row,Col,Container } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import './PartnerInventoryDashboard.css';
 import Table from 'react-bootstrap/Table';
-import { inventorydetails } from "../../Customer/CustomerMainScreen/orderdummydata";
-import { useNavigate,useParams } from 'react-router-dom';
+import { useLocation, useNavigate,useParams } from 'react-router-dom';
 import axios from "axios";
 import SearchBar from "../../../components/SearchBar";
 
 let PartnerInventoryDashboard = () =>{
 
-       // searchbar
+  // searchbar
   const [orders, setOrders] = useState([]);             // Holds all orders
   const [filteredOrders, setFilteredOrders] = useState([]);// Holds filtered orders
-  const [searchQuery, setSearchQuery] = useState('');      // Holds the search query
-
-            const Navigate=useNavigate();
-            const {id}=useParams();
-            const [inventoryTable,setInventoryTable]=useState([]);
-     function handleInventoryHistory(id){
-             Navigate(`/partner/inventory/history/${id}`);
+  const [searchQuery, setSearchQuery] = useState('');     // Holds the search query
+  const [ErrorState,setErrorState]=useState(0);
+  const Navigate=useNavigate();
+  const {id,orderId}=useParams();
+  const [inventoryTable,setInventoryTable]=useState([]);
+     function handleInventoryHistory(inventoryId){
+             Navigate(`/partner/${id}/inventory/history/${inventoryId}`);
      }
 
-     function handleEditInventory(id){
-           Navigate(`/partner/inventory/history/creation/${id}`);
+     function handleEditInventory(Id,inventoryId){
+           Navigate(`/partner/${Id}/inventory/history/creation/${inventoryId}`,{state:{orderId:orderId}});
      }
     
     
      
    useEffect(() => {
-      const fetchOrderDetails = async () => {
+      const fetchInventoryDetails = async () => {
         try {
-          const response = await axios.get(`${process.env.REACT_APP_API}/partner/inventory/dashboard/${id}`);
+          const response = await axios.get(`${process.env.REACT_APP_API}/partner/${id}/inventory/dashboard/${orderId}`,{withCredentials:true});
           setInventoryTable(response.data.data);
           setOrders(response.data.data);
           setFilteredOrders(response.data.data);
-          console.log(response.data.data[0])
+          
         } catch (error) {
           console.error('Error fetching order details:', error);
+          if (error.request.status===401){
+            setErrorState(1)
+           }
         }
       };
   
-      fetchOrderDetails();
-    }, [id]);
-
+      fetchInventoryDetails();
+    }, [id,orderId]);
      // Handle changes in the search bar input
   const handleSearchChange = (e) => {
     const searchQuery = e.target.value;
@@ -58,9 +59,16 @@ let PartnerInventoryDashboard = () =>{
       );
       setFilteredOrders(filteredOrders);
     };
+    const [spaceRemainingOrder,setspaceRemainingForOrder]=useState(0);
     
-
-
+    setspaceRemainingForOrder(inventoryTable.length>0 && inventory)
+    console.log(inventoryTable)
+    const handleAddInventory=()=>{
+      Navigate(`/partner/${id}/inventory/creation/${orderId}`,{state:{remainingSpace:spaceRemainingOrder}})
+    }
+    if(ErrorState===1){
+      Navigate('/unauthorizedpage');
+    }
     return(
         <>
           <Container className="mb-3">
@@ -73,16 +81,13 @@ let PartnerInventoryDashboard = () =>{
                     <Col>	
                     <SearchBar PlaceHolder="search by inventory ID" value={searchQuery} onChange={handleSearchChange} />	
                      </Col>
-                    <Col className="ms-auto" xs={12} md={3}><Button variant="warning" size="lg" className="addinventorybutton m-auto"> Add Inventory</Button></Col>
+                    <Col className="ms-auto" xs={12} md={3}><Button onClick={handleAddInventory} variant="warning" size="lg" className="addinventorybutton m-auto"> Add Inventory</Button></Col>
                  </Row>
                  <div className="partnerorderdetails">
                  <Row className="mt-3">
-                    <Col xs={12} md={6}> Order Id : {id}</Col>
+                    <Col xs={12} md={6}> Order Id : {orderId}</Col>
+                    <Col xs={12} md={6}> Space Remaining for no.of Units:{spaceRemainingOrder}</Col>
                     
-                 </Row>
-                 <Row className="mt-3">
-                    <Col xs={12} md={6}> Total Order Units : {inventoryTable.length > 0 && inventoryTable[0].total_inventory_units}</Col>
-                    <Col xs={12} md={6}> Space Remaining for no.of Units:{inventoryTable.length > 0 && inventoryTable[0].balance_inventory_units}</Col>
                  </Row>
                  </div>
 
@@ -112,9 +117,9 @@ let PartnerInventoryDashboard = () =>{
                             <td>{val.batch_number}</td> 
                             <td>{val.inventory_arrived_date_time}</td> 
                             <td>{val.ageing} days</td>
-                            <td>{val.temperaturedata}</td>
+                            <td>{val.inventory_temp_data}</td>
                             <td> <Button onClick={()=>handleInventoryHistory(val.inventory_id)} variant="danger">Inventory History</Button> </td>
-                            <td> <Button onClick={()=>handleEditInventory(val.inventory_id)} variant="danger"> Edit Inventory</Button> </td>
+                            <td> <Button onClick={()=>handleEditInventory(id,val.inventory_id)} variant="danger"> Edit Inventory</Button> </td>
                              </>  
                             </tr>  ))} 
                         

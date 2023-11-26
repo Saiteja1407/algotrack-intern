@@ -35,7 +35,7 @@ import UpdateSensor from "./pages/Admin/UpdateSensor/UpdateSensor";
 import InventoryCreation from "./pages/Partner/InvetoryCreation/InventoryCreation";
 import InventoryHistoryCreation from "./pages/Partner/InventoryHistoryCreation/InventoryHistoryCreation";
 import AdminWarehouses from "./pages/Admin/AdminWarehouses/AdminWarehouses";
-import AdminLayout from "./components/admin/AdminLayout";
+
 import AddWarehouse from "./pages/Admin/AddWarehouse/AddWarehouse";
 // import ButtonComponent from "./components/ButtonComponent";
 // import PartnerWarehouseDetails from "./pages/Partner/PartnerWarehouseDetails/PartnerWarehouseDetails";
@@ -52,9 +52,16 @@ import AdminOrderDetails from "./pages/Admin/AdminOrderDetails/AdminOrderDetails
 import AdminNavbar from "./components/admin/AdminNavbar";
 import CustomerMainScreen1 from "./pages/Customer/NewOrder/CustomerMainScreen1";
 import AdminPartnerManagement from "./pages/Admin/AdminPartnerManagement/AdminPartnerManagement";
+import Unauthorized from "./pages/unauthorized";
+import Logout  from "./pages/logout/logout.js";
+import PlaceOrderDetails from "./pages/Customer/NewOrder/placeOrder.js";
+import UnauthorizedPage from "./pages/Admin/Alert/alert.jsx";
+import CustomerProfile from "./pages/Customer/CustomerProfile/CustomerProfile.js";
+import PartnerProfile from "./pages/Partner/PartnerProfile/PartnerProfile.js";
 function App() {
   return (
     <>
+    
     <BrowserRouter>
       <Routes>
 
@@ -65,6 +72,8 @@ function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage />} />
         </Route>
+        <Route path="/logout" element={<Logout/>}/>
+        <Route path="/unauthorizedpage" element={<UnauthorizedPage/>}/>
 
          {/* sign up, login and REGISTRATION for customer */}
         <Route path="/signup/mobile" element={<MobileVerification/>}/>
@@ -72,17 +81,24 @@ function App() {
         <Route path="/login/customer/mobile" element={<MobileLogin/>}/>
         <Route path="/login/customer/email" element={<EmailLogin/>} />
         <Route path="/customer/registration" element={<CustomerRegistration/>}/>
+        <Route path="/unauthorized" element={<Unauthorized/>}/>
         
         {/* ------customer routes----- */}
         <Route path="/customer/" element={<CustomerLayout/>}>
-          <Route path="mainscreen/:id" element={<CustomerMainScreen/>}/>
-          <Route path="order/details/:id" element={<CustomerOrderDetails/>}/>
+         {/* <Route path="mainscreen/:id" element={<CustomerMainScreen/>}/> */}
+         <Route path="mainscreen/:id" element={<CustomerMainScreen/>}/>
+          {/* <Route  element={<ProtectedRoute/>}> */}
+          <Route exact path=":id/order/details/:orderId" element={<CustomerOrderDetails/>}/>
+          <Route exact path=":id/:warehouseId/placeOrder" element={<PlaceOrderDetails/>}/>
+          
           <Route path=":id/mainscreen1" element={<CustomerMainScreen1/>}/>
+          {/* </Route> */}
           <Route path=":id/mainscreen2" element={<MainScreen2/>}/>
           <Route path=":id/searchedlocations" element={<SearchedLocations/>}/>
           <Route path=":id/:warehouseId" element={<CustomerWarehouseDetails/>}/>
-          <Route path="inventory/dashboard/:id" element={<CustomerInventoryDashboard/>}/>
-          <Route path="inventory/history/:id" element={<CustomerInventoryHistory/>}/>
+          <Route path=":id/inventory/dashboard/:orderId" element={<CustomerInventoryDashboard/>}/>
+          <Route path=":id/inventory/history/:inventoryId" element={<CustomerInventoryHistory/>}/>
+          <Route path=":id" element={<CustomerProfile/>}/>
           <Route path="*" element={<NoPage />} />
         </Route>
 
@@ -92,16 +108,15 @@ function App() {
         <Route path="/partner/" element={<PartnerLayout/>}>
 
         <Route path="mainscreen/:id" element={<PartnerMainScreen/>}/>
-        <Route path="warehouses" element={<PartnerWarehouses/>}/>
-        <Route path="warehouse/details" element={<PartnerWarehouseDetails/>}/>
+        <Route path=":id/warehouses" element={<PartnerWarehouses/>}/>
+        <Route path=":id/:warehouseId" element={<PartnerWarehouseDetails/>}/>
   {/* pending      <Route path="sensordevices" element={<PartnerSensorDevices/>}/> */}
-        <Route path="order/details/:id" element={<PartnerOrderDetails/>}/>
-        <Route path="inventory/dashboard/:id" element={<PartnerInventoryDashboard/>}/>
-        <Route path="inventory/history/:id" element={<PartnerInventoryHistory/>}/>
-        <Route path="inventory/creation" element={<InventoryCreation/>}/>
-        <Route path="inventory/history/creation/:id" element={<InventoryHistoryCreation/>}/>
-       
-        
+        <Route path=":id/order/details/:orderId" element={<PartnerOrderDetails/>}/>
+        <Route path=":id/inventory/dashboard/:orderId" element={<PartnerInventoryDashboard/>}/>
+        <Route path=":id/inventory/history/:inventoryId" element={<PartnerInventoryHistory/>}/>
+        <Route path=":id/inventory/creation/:orderId" element={<InventoryCreation/>}/>
+        <Route path=":id/inventory/history/creation/:inventoryId" element={<InventoryHistoryCreation/>}/>
+        <Route path=":id" element={<PartnerProfile/>}/>
         </Route>
 
 
@@ -116,9 +131,9 @@ function App() {
         <Route path=":id/orders/dashboard" element={<AdminOrdersDashboard/>}/>
         <Route path=":id/order/details/:orderId" element={<AdminOrderDetails/>}/>
         <Route path=":id/:partnerId/warehouses" element={<AdminWarehouses/>}/>
-        <Route path="/admin/:id/:partnerId/warehouse/:warehouseId/details" element={<AdminWarehouseDetails/>}/>
+        <Route path=":id/:partnerId/warehouse/:warehouseId/details" element={<AdminWarehouseDetails/>}/>
         <Route path="/admin/sensordevices" element={<AdminSensorDevices/>}/>
-        <Route path="/admin/addwarehouse" element={<AddWarehouse/>}/>
+        <Route path=":id/:partnerId/addwarehouse" element={<AddWarehouse/>}/>
         <Route path=":id/updatewarehouse/:warehouseId" element={<UpdateWarehouseDetails/>}/>
         <Route path=":id/customer/management" element={<AdminCustomerManagment/>}/>
         <Route path=":id/partner/management/" element={<AdminPartnerManagement/>}/>
@@ -135,8 +150,8 @@ function App() {
         
         
         
-        <Route path="/admin/customer/management" element={<AdminCustomerManagment/>}/>
-        <Route path="/admin/customer/verification" element={<AdminCustomerVerification/>}/>
+        <Route path="/admin/:id/customer/management" element={<AdminCustomerManagment/>}/>
+        <Route path="/admin/:id/customer/verification" element={<AdminCustomerVerification/>}/>
         <Route path="/admin/orders/dashboard" element={<AdminOrdersDashboard/>}/>
         
         

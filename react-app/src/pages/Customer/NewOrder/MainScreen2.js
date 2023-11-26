@@ -51,9 +51,9 @@ const MainScreen2 = () => {
       const postData = async () => {
         
         try {
-          console.log(formData);
           const response = await axios.post(`${process.env.REACT_APP_API}/customer/${id}/mainscreen2`, formData);
           const responseData = response.data.data;
+          console.log(response.data.data)
 
       // Navigate to SearchedLocations and pass the response data in the state
       navigate(`/customer/${id}/searchedlocations`,{state:{formData:formData,responseData:responseData}});

@@ -21,12 +21,16 @@ const EmailLogin = () => {
    const handleSubmit=(e)=>{
        const postData = async () => {
         try {
-          const response = await axios.post(`${process.env.REACT_APP_API}/login/customer/email`, inputs);
-          navigate(`/customer/mainscreen/${response.data.data}`);
-          
+          const response = await axios.post(`${process.env.REACT_APP_API}/login/customer/email`, inputs,{withCredentials:true});
+          navigate(`/customer/mainscreen/${response.data.data.customerId}`);
           return response.data
         } catch (error) {
-          throw error;
+          if(error.request && error.request.status===403){
+            alert('you are not registered with us or invalid credentials')
+          }
+          else if(error.request && error.request.status===402){
+            alert('Invalid password')
+          }
         }
       };
       postData();
@@ -40,22 +44,22 @@ const EmailLogin = () => {
          <div className='login shadow' >
              <h2 className='mb-3' style={{paddingTop:10+'px', paddingBottom:10+'px'}}>Login With Email Id</h2>
              <form className='needs-validation' onSubmit={handleSubmit}> 
-               <div className='form-group was-validated mb-2'>
-                      <label htmlFor='email' className='form-label'>Email Address</label>
+               <div className='form-floating was-validated mb-2'>
                       <input type='email' name='email' onChange={handleChange} value={inputs.email} className='form-control' required></input>
+                      <label htmlFor='email' className='form-label'>Email Address</label>
                       <div className='invalid-feedback'>
                          Please Enter Your Email 
                       </div>
                </div>
                <div className='input-group mb-2 was-validated'>
                     <div className="form-floating">
-                            <input type={visible ? "text" : "password"} name='password' value={inputs.password} onChange={handleChange} className="form-control" id="floatingPassword" placeholder="Password" required/>
-                            <label for="floatingPassword">Password</label>
+                            <input type={visible ? "text" : "password"} name='password' value={inputs.password} onChange={handleChange} className="form-control" placeholder="Password" required/>
+                            <label htmlFor="floatingPassword">Password</label>
                             <div className='invalid-feedback'>Enter the Password</div>
                     </div>
                     <span className="input-group-text" style={{height:58+"px"}} onClick={()=> setVisibility(visible => !visible)}>{visible ? <FaEyeSlash/> : <FaEye/>}</span>
                </div>
-               <p style={{textAlign:"center"}}><a href=''>Forgot your Password?</a></p>
+               <p style={{textAlign:"center"}}><a href='/'>Forgot your Password?</a></p>
                <button type='submit' className='btn btn-success w-100 mt-2'>Login</button>
              </form>
              
